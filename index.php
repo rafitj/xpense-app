@@ -1,3 +1,9 @@
+<?php
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: *");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +13,12 @@
 </head>
 <body>
     <div id="loginContent">
-        <!-- Add your login form here -->
+        <form method="POST" >
+            <input id="login-email" type="text"></input>
+            <input id="login-password" type="password"></input>
+            <input id="login" type = "button"></input>
+        </form>
     </div>
-
     <div id="transactionTable">
         <h1>Transactions:</h1>
         <table>
