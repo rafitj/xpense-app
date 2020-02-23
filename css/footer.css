@@ -1,0 +1,8 @@
+.footer-border {
+    height: 2rem;
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to right, var(--yellow), var(--yellow) 33.33%, var(--green) 33.33%, var(--green) 66.66%, var(--blue) 66.66%);
+}

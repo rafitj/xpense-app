@@ -1,50 +1,32 @@
-<?php
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS");
-    header("Access-Control-Allow-Headers: *");
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Expensify Take-Home Challenge</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/view.css">
+    <link rel="stylesheet" type="text/css" href="css/header.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
 </head>
 <body>
-    <div id="loginContent">
-        <form method="POST" >
-            <input id="login-email" type="text"></input>
-            <input id="login-password" type="password"></input>
-            <input id="login" type = "button"></input>
-        </form>
+    <div class = "center" id = "loader">
+        <div id ="spinner"></div>
+        <p>Loading</p>
     </div>
-    <div id="transactionTable">
-        <h1>Transactions:</h1>
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Transaction Date</th>
-                    <th>Merchant</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-
-            <tbody id="transactionTableBody">
-                <!-- Add the transaction rows here -->
-            </tbody>
-
-        </table>
-    </div>
-
-    <div id="transactionForm">
-        <!-- Add your create transaction form here -->
-    </div>
+    <?php 
+            include_once('view.php');
+            include_once('form.php');
+    ?>
 
     <!-- Javascript Files, we've included JQuery here, feel free to use at your discretion. Add whatever else you may need here too. -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+
+    <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/singleton.js"></script>
+    <script src="https://kit.fontawesome.com/1c78a49af0.js" crossorigin="anonymous"></script>
 
 </body>
 </html>
