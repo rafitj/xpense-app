@@ -50,11 +50,12 @@ th {
 td {
     padding: 0.5rem;
     text-align: center;
-    border: 1px solid var(--white);
+    border-bottom: 1px solid var(--white);
     width: 12.87rem;
-    height: 1.25rem;
+    height: 2rem;
     overflow: scroll;
     display: inline-block;
+    align-items: center;
 }
 
 tr { display: block;     overflow: scroll;}
@@ -64,12 +65,11 @@ thead th:last-child {
 }
 
 tbody tr:hover {
-    transform: scale(1.025);
+    transform: scale(1.05);
+    background-color: var(--white);
     filter: drop-shadow( 0 0 15px rgba(0, 0, 0, .3));
-    background-color: var(--green);
     cursor: pointer;
-    color: white;
-    font-weight: bold;
+    border-radius: 5px;
 }
 
 thead tr th:hover {
@@ -196,7 +196,6 @@ h2 {
 #page-buttons div:hover{
     background-color: var(--grey);
     color: var(--white);
-    margin: 0 0.5rem;
     cursor: pointer;
     filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
 }
@@ -243,4 +242,8 @@ h2 {
 
 .disabled-amount {
     opacity: 0.4;
+}
+
+.new-row {
+    background-color: #f7c74480;
 }

@@ -134,7 +134,6 @@ let currSort
 // Custom Paginated Table
 $('#search-table').keyup(()=>{
     const query = $('#search-table').val().toLowerCase()
-    console.log(query)
     // const newInstance = Singleton.getInstance().filter((page)=>
     //     page.created.includes(query) || page.merchant.toLowerCase().includes(query)
     // )
@@ -194,6 +193,7 @@ const addToTable = (transaction, isNew) => {
     if (isNew) {
         $('<tr>').prependTo($('tbody'));
         $tr = $('tbody').find('tr:first');
+        $tr.addClass('new-row')
     } else {
         $('<tr>').appendTo($('tbody'));
         $tr = $('tbody').find('tr:last');
@@ -220,26 +220,26 @@ const renderTable = (page) => {
     }
 
     $('#page-buttons div').hide()
+
     // Buttons
     $('#curr-page').html(`${page}`).show()
-    if(page+1 <= numPages) {
+    if(parseInt(page)+1 <= numPages) {
         $('#next-page').html(`${parseInt(page)+1}`).data("page",page+1).show()
         $('#next-button').data("page",page+1).show()
     } 
-    if (page+2 <= numPages) {
+    if (parseInt(page)+2 <= numPages) {
         $('#next-next-page').html(`${parseInt(page)+2}`).data("page",page+2).show()
     }
-    if(page-1 >= 1) {
+    if(parseInt(page)-1 >= 1) {
         $('#prev-page').html(`${parseInt(page)-1}`).data("page",page-1).show()
         $('#prev-button').data("page",page-1).show()
     } 
-    if (page-2 >= 1) {
+    if (parseInt(page)-2 >= 1) {
         $('#prev-prev-page').html(`${parseInt(page)-2}`).data("page",page-2).show()
     }
 }
 
 $('#page-buttons div').click((e)=>{
-    console.log($(e.currentTarget))
     const clickedPage = $(e.currentTarget).data('page')
     renderTable(clickedPage)
 })

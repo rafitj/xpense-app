@@ -3,12 +3,8 @@
 $partnerName = $_ENV['PARTNER_NAME'];
 $partnerPassword = $_ENV['PARTNER_PASSWORD'];
 
-function createRequestUrl($command, $paramaters){
-	$url = 'https://api.expensify.com/?command=' . $command;
-	//parse the paramaters
-	foreach($paramaters as $key => $value){
-		$url .= '&' . $key . '=' . $value;
-	}
+function createRequestUrl($paramaters){
+	$url = 'https://api.expensify.com/?' . http_build_query($paramaters);
 	return @file_get_contents($url);
 }
 
@@ -20,11 +16,12 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 			$partnerUserID = $_POST["partnerUserID"];
             $partnerUserSecret = $_POST["partnerUserSecret"];
 			$paramaters = array(
+				"command" => "Authenticate",
 				"partnerName" => $partnerName,
 				"partnerPassword" => $partnerPassword,
 				"partnerUserID" => $partnerUserID,
 				"partnerUserSecret" => $partnerUserSecret);
-			$content = createRequestUrl("Authenticate", $paramaters);
+			$content = createRequestUrl($paramaters);
 			
 			if ($content === FALSE) {
 				$response = array('error' => true, 'msg' => 'Please Check Network Connection'); 
@@ -77,11 +74,12 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 		if( isset($_GET["authToken"])){
 			//good token lets request
 			$paramaters = array(
+				"command" => "Get",
 				"authToken" => $_GET["authToken"],
 				"returnValueList" => $_GET["returnValueList"]
 				);
 
-			$content = createRequestUrl("Get", $paramaters);
+			$content = createRequestUrl($paramaters);
 		
 			if ($content === FALSE) {
 				$response = array('error' => true, 'msg' => 'Please Check Network Connection'); 
@@ -127,13 +125,14 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 			if( isset($_POST["merchant"]) && isset($_POST["amount"]) && isset($_POST["created"]) ){
 				//we have everything lets make the request
 				$paramaters = array(
+					"command" => "CreateTransaction",
 					"authToken" => $_POST["authToken"],
 					"created" => $_POST["created"],
 					"amount" => $_POST["amount"],
 					"merchant" => $_POST["merchant"],
 				);
 
-				$content = createRequestUrl("CreateTransaction", $paramaters);
+				$content = createRequestUrl($paramaters);
 		
 				if ($content === FALSE) {
 					$response = array('error' => true, 'msg' => 'Failed: Please Check Network Connection'); 

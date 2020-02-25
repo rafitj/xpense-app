@@ -20,9 +20,11 @@ const createTransactionAJAX = ({authToken,amount,created,merchant}) => {
                 const data = JSON.parse(jsonRes.msg)
                 const transaction = data.transactionList[0]
                 addToTable(transaction, true)
+                $resetTransaction.click()
             }
         },
         error: (jqXHR) => {
+            console.log(jqHXR)
             if(jqXHR.statusText === 'timeout')
             {     
                 $addTransactionErrMsg.html(`Failed: Please Check Network Connection`)
@@ -80,7 +82,7 @@ const loadTransactionsAJAX = (authToken) => {
             authToken,
             returnValueList: 'transactionList',
         },
-        timeout: 10000,
+        timeout: 12000,
         success: (res) => {
             const jsonRes = JSON.parse(res)
             if (jsonRes.error){
