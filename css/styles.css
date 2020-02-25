@@ -26,6 +26,15 @@
     background-color: var(--yellow);
     color: var(--white)
 }
+.red-text {
+    color: var(--red)  
+}
+.green-text {
+    color: var(--green)  
+}
+.yellow-text {
+    color: var(--yellow)
+}
 body {
     background-color: var(--bg-color);
 }
@@ -140,7 +149,7 @@ input[type=button]:hover {
     100% { transform: translate(-49%, -52%) rotate(-1deg); }
 }
 
-#login-err-alert, #add-transac-err-alert {
+#login-err-alert, #add-transac-err-alert, #load-transac-err-alert {
     width: 38rem;
     background-color: var(--red);
     filter: drop-shadow( 0 0 5px rgba(0, 0, 0, .1));
@@ -159,9 +168,6 @@ input[type=button]:hover {
     transform: translate(-50%, 15rem) !important;
 }
 
-#add-transac-err-alert {
-}
-
 #login-dismiss-err, #add-transac-dismiss-err {
     color: var(--white);
     font-size: large;
@@ -173,8 +179,11 @@ input[type=button]:hover {
 }
 
 #password-caps {
-    color: var(--grey);
+    background-color: var(--grey);
+    color: var(--white);
     text-align: right;
+    padding: 0.25rem 0.3rem;
+    border-radius: 5px;
 }
 #login-password-utils {
     display: flex;
@@ -182,6 +191,10 @@ input[type=button]:hover {
     font-size: var(--body);
     font-weight: bold;
     padding: 0 5rem;
+}
+
+#loader{
+    z-index: 999;
 }
 
 #loader p {

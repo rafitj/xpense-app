@@ -9,7 +9,7 @@ function createRequestUrl($command, $paramaters){
 	foreach($paramaters as $key => $value){
 		$url .= '&' . $key . '=' . $value;
 	}
-	return $url;
+	return @file_get_contents($url);
 }
 
 //is valid command coming in?
@@ -24,11 +24,15 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 				"partnerPassword" => $partnerPassword,
 				"partnerUserID" => $partnerUserID,
 				"partnerUserSecret" => $partnerUserSecret);
-			$url = createRequestUrl("Authenticate", $paramaters);
+			$content = createRequestUrl("Authenticate", $paramaters);
 			
-			//api request
-			$request =  file_get_contents($url);
-			$phpData = json_decode($request);
+			if ($content === FALSE) {
+				$response = array('error' => true, 'msg' => 'Please Check Network Connection'); 
+				$msg = json_encode($response);
+				exit($msg);
+			}
+			
+			$phpData = json_decode($content);
 
 			if($phpData->jsonCode == 200){
 				//all good
@@ -76,12 +80,16 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 				"authToken" => $_GET["authToken"],
 				"returnValueList" => $_GET["returnValueList"]
 				);
-			$url = createRequestUrl("Get", $paramaters);
 
-			//api returns json
-			$jsonData =  file_get_contents($url);
-			//php is like this
-			$phpData = json_decode($jsonData);
+			$content = createRequestUrl("Get", $paramaters);
+		
+			if ($content === FALSE) {
+				$response = array('error' => true, 'msg' => 'Please Check Network Connection'); 
+				$msg = json_encode($response);
+				exit($msg);
+			}
+			
+			$phpData = json_decode($content);
 			
 			//check codes
 			if($phpData->jsonCode == 200){
@@ -124,13 +132,16 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 					"amount" => $_POST["amount"],
 					"merchant" => $_POST["merchant"],
 				);
-				$url = createRequestUrl("CreateTransaction", $paramaters);
-				//api returns json
-				$jsonData =  file_get_contents($url);
 
-				//php is like this
-				$phpData = json_decode($jsonData);
-
+				$content = createRequestUrl("CreateTransaction", $paramaters);
+		
+				if ($content === FALSE) {
+					$response = array('error' => true, 'msg' => 'Failed: Please Check Network Connection'); 
+					$msg = json_encode($response);
+					die($msg);
+				}
+				
+				$phpData = json_decode($content);
 				//check codes
 				if($phpData->jsonCode == 200){
 					$response = array('error' => false, 'msg' => json_encode($phpData), 'status' => 200); 

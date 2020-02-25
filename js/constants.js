@@ -15,6 +15,9 @@ const $addTransactionErrAlert = $('#add-transac-err-alert')
 const $addTransactionDismissErr = $('#add-transac-dismiss-err')
 const $addTransactionErrMsg = $('#add-transac-err-msg')
 
+const $loadTransactionErrAlert = $('#load-transac-err-alert')
+const $loadTransactionErrMsg = $('#load-transac-err-msg')
+
 // Login Consta$nts
 const $logoutButton = $('#logout-button')
 const $loginButton = $('#login-button')
@@ -40,3 +43,25 @@ const Commands = {
     CreateTransaction: 'CreateTransaction',
     Authenticate: 'Authenticate'
 }
+
+// Data
+const Singleton = (() => {
+    var instance;
+ 
+     createInstance = (data) => {
+        const object = new Object(data);
+        return object;
+    }
+
+ 
+    return {
+        getInstance: (data) => {
+            if (!instance) {
+                instance = createInstance(data);
+            }
+            return instance;
+        }
+    };
+})();
+ 
+const perPage = 100

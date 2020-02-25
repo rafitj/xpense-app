@@ -9,21 +9,24 @@
 #header img {
     width: 3.5rem;
 }
+
 .border {
     height: 0.4rem;
     width: 95vw;
     margin: 0 auto;
+    margin-bottom: 1rem;
     background: linear-gradient(to right, var(--yellow), var(--yellow) 33.33%, var(--green) 33.33%, var(--green) 66.66%, var(--blue) 66.66%);
 }
 
 #logout-button{
-    color:white;
+    color:var(--white);
     background-color: var(--blue);
     border: 2px solid rgba(255, 255, 255, 0);
     filter:none;
     opacity: 1;
     margin: 0;
 }
+
 #logout-button:hover{
     color:var(--green);
     background-color: var(--white);

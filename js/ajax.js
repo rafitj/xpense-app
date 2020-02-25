@@ -9,21 +9,24 @@ const createTransactionAJAX = ({authToken,amount,created,merchant}) => {
             merchant,
             authToken
         },
+        timeout: 5000,
         success: (res) => {
-            console.log(res)
             const jsonRes = JSON.parse(res)
             if (jsonRes.error) {
                 $addTransactionErrMsg.html(`<i class="fas fa-exclamation-triangle"></i>  ${jsonRes.msg}`)
                 $addTransactionErrAlert.show()
-            } else {
+            } else { 
+                $addTransactionErrAlert.hide()
                 const data = JSON.parse(jsonRes.msg)
                 const transaction = data.transactionList[0]
-                const {amount,created,merchant} = transaction
-                $('<tr>').prependTo($('tbody'));
-                $tr = $('tbody').find('tr:first');
-                $tr.append($('<td>').text(created));
-                $tr.append($('<td>').text(merchant));
-                $tr.append($('<td>').text(amount));
+                addToTable(transaction, true)
+            }
+        },
+        error: (jqXHR) => {
+            if(jqXHR.statusText === 'timeout')
+            {     
+                $addTransactionErrMsg.html(`Failed: Please Check Network Connection`)
+                $addTransactionErrAlert.show()
             }
         },
     })
@@ -38,6 +41,7 @@ const loginUserAJAX = ({email,password}) => {
             partnerUserID: email,
             partnerUserSecret: password
         },
+        timeout: 5000,
         success: (res) => {
             const jsonRes = JSON.parse(res)
             if (jsonRes.error){
@@ -52,6 +56,18 @@ const loginUserAJAX = ({email,password}) => {
                 toggleUserView()
             }
         },
+        error: (jqXHR) => {
+            if(jqXHR.statusText === 'timeout')
+            {     
+                $unauthenticatedView.addClass('shake-error')
+                setTimeout( () => {
+                    $unauthenticatedView.removeClass('shake-error');
+                }, 500);
+                $loginErrMsg.html(`Failed: Please Check Network Connection`)
+                $loginErrAlert.show()
+            }
+        },
+
     })
 }
 
@@ -64,6 +80,7 @@ const loadTransactionsAJAX = (authToken) => {
             authToken,
             returnValueList: 'transactionList',
         },
+        timeout: 10000,
         success: (res) => {
             const jsonRes = JSON.parse(res)
             if (jsonRes.error){
@@ -74,6 +91,13 @@ const loadTransactionsAJAX = (authToken) => {
                 renderTable(1)
                 $authenticatedView.show()
                 $logoutButton.show()
+            }
+        },
+        error: (jqXHR) => {
+            if(jqXHR.statusText === 'timeout')
+            {     
+                $loadTransactionErrMsg.html(`Failed: Please Check Network Connection`)
+                $loadTransactionErrAlert.show()
             }
         },
     })
