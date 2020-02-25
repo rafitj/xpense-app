@@ -61,7 +61,7 @@ td {
 tr { display: block;     overflow: scroll;}
 
 thead th:last-child {
-    width: 14rem; /* 140px + 16px scrollbar width */
+    width: 14rem;
 }
 
 tbody tr:hover {
