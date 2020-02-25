@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php": "7.3.9"
+    },
+    "authors": [
+        {
+            "name": "Rafit Jamil",
+            "email": "rafit.jamil@gmail.com",
+            "homepage": "http://www.rafit.me",
+            "role": "Developer"
+        }
+    ]
+}
