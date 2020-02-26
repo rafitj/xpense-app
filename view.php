@@ -5,14 +5,36 @@
 <div id="viewContent">    
     <div id="transactionTable">
         <h2>My Transactions</h2>
-        <input id ="search-table" type="text" placeholder="Search Transactions...">
+        <input id ="search-table" type="text" placeholder="Search Transactions By Merchant, Date or Amount...">
+        <div id ="search-filters">
+            Date Transacted:
+            <select class="filter-select" id="time-select">
+                <option value="Today">Today </option>
+                <option value="LastWeek" >Last Week </option>
+                <option value = "LastMonth">Last Month </option>
+                <option value = "AllTime">All Time </option>
+            </select>
+            Transaction Type:
+            <select class="filter-select" id="type-select">
+                <option value="All">All </option>
+                <option value="Positive">Positive </option>
+                <option value = "Negative">Negative </option>
+                <option value = "Neutral">Neutral </option>
+            </select>
+            Display:
+            <select class="filter-select" id="display-select"> 
+                <option value=100>100 rows</option>
+                <option value=50>50 rows</option>
+                <option value=10>10 rows</option>
+            </select>
+        </div>
         <table id="main-table">
 
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Merchant</th>
-                    <th>Amount</th>
+                    <th sort-by="Date">Date</th>
+                    <th sort-by="Merchant">Merchant</th>
+                    <th sort-by="Amount">Amount</th>
                 </tr>
                </thead>
 
@@ -49,11 +71,10 @@
             <form id="addForm" method="POST" >
                 <div>
                     <label for ="transaction-merchant">Merchant </label>
-                    <input id="transaction-merchant" placeholder = "Shop" type="text"></input>
+                    <input id="transaction-merchant" placeholder = "Flower Shop" type="text"></input>
                 </div>    
-
                 <div>
-                    <label id="amount-label" for ="transaction-amount">Amount </label> 
+                    <label id="amount-label" for ="transaction-amount">Amount ($) </label> 
                     <div id="transaction-amount-paid">Paid</div>
                     <div id="transaction-amount-earned">Earned</div> <br/>
                     <input id="transaction-amount"  min = 0 step = 0.01 placeholder = 1.00 type="number"></input>

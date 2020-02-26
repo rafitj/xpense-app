@@ -89,7 +89,7 @@ const loadTransactionsAJAX = (authToken) => {
                 console.log(jsonRes.msg)
             } else {
                 const data = JSON.parse(jsonRes.msg)
-                Singleton.getInstance(data.transactionList)
+                Singleton.createOriginalInstance(data.transactionList)
                 renderTable(1)
                 $authenticatedView.show()
                 $logoutButton.show()

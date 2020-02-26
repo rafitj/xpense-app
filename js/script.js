@@ -17,6 +17,10 @@ $(document)
   .ajaxStop(() => {
     $loader.hide()
   })
+  
+
+
+
 
 // Document
 $(document).ready(()=>{
@@ -29,12 +33,41 @@ $(document).ready(()=>{
     $unauthenticatedView.hide()
     $('#transaction-amount-earned').addClass('disabled-amount')
 
+    var $table = $('table'),
+    $bodyCells = $table.find('tbody tr:first').children(),
+    colWidth;
+
+    colWidth = $bodyCells.map(function() {
+        return $(this).width();
+    }).get();
+
+    $table.find('thead tr').children().each(function(i, v) {
+        $(v).width(colWidth[i]);
+    });  
 
     $('#password-caps').hide()
     toggleUserView() // Choose view
     toggleLoginButton()
     $transactionCreated.val(currentDate) // Set new transaction default date
 })
+
+$(window).resize(function() {
+    var $table = $('table'),
+    $bodyCells = $table.find('tbody tr:first').children(),
+    colWidth;
+
+    console.log
+
+    colWidth = $bodyCells.map(function() {
+        return $(this).width();
+    }).get();
+
+    $table.find('thead tr').children().each(function(i, v) {
+        $(v).width(colWidth[i]);
+    });  
+
+}).resize();
+
 
 // Checks Cookies and presents view
 const toggleUserView = () => {
@@ -130,32 +163,52 @@ $logoutButton.click(()=>{
     toggleUserView()
 })
 
-let currSort
+let query = ''
 // Custom Paginated Table
 $('#search-table').keyup(()=>{
-    const query = $('#search-table').val().toLowerCase()
-    // const newInstance = Singleton.getInstance().filter((page)=>
-    //     page.created.includes(query) || page.merchant.toLowerCase().includes(query)
-    // )
-    // const pageInstance = Singleton.newInstance(newInstance)
-    // renderTable(1)
+    query = $('#search-table').val().toLowerCase()
+    makeSearch()
+    renderTable(1)
 })
-$('thead tr th').click((e)=>{
-    const sortBy = e.target.innerText;
+
+const makeSearch = () => {
+    Singleton.refreshInstance()
+    const newInstance = Singleton.getInstance().filter((page)=>
+        page.created.includes(query) || page.merchant.toLowerCase().includes(query) || 
+        (page.amount/100).toString().includes(query)
+    )
+    Singleton.changeInstance(newInstance)
+}
+
+let currSort = {
+    sortBy: 'Merchant',
+    ascending: true
+}
+const sortTable = () => {
+    const {sortBy, ascending} = currSort
     const pageInstance = Singleton.getInstance()
-    const isToggleSort = sortBy===currSort
     if (sortBy==='Merchant') {
-        if(isToggleSort) pageInstance.sort((a,b)=>a.merchant.localeCompare(b.merchant))
+        if(ascending) pageInstance.sort((a,b)=>a.merchant.localeCompare(b.merchant))
         else pageInstance.sort((a,b)=>b.merchant.localeCompare(a.merchant))
     } else if (sortBy ==="Date") {
-        if(isToggleSort) pageInstance.sort((a,b)=>a.created < b.created ? 1 : -1)
+        if(ascending) pageInstance.sort((a,b)=>a.created < b.created ? 1 : -1)
         else pageInstance.sort((a,b)=>b.created < a.created ? 1 : -1)
     } else {
-        if(isToggleSort) pageInstance.sort((a,b)=>a.amount-b.amount)
+        if(ascending) pageInstance.sort((a,b)=>a.amount-b.amount)
         else pageInstance.sort((a,b)=>b.amount-a.amount)
     }
-    currSort = sortBy
     renderTable(1)
+}
+$('thead tr th').click((e)=>{
+    const sortBy = $(e.target).attr('sort-by');
+    const isToggleSort = sortBy===currSort.sortBy
+    if(isToggleSort) {
+        currSort = {...currSort, ascending: !currSort.ascending}
+    }
+    else {
+        currSort = {sortBy, ascending: true}
+    }
+    sortTable()
 })
 $('#cur-page-input').change(()=>{
     let page = $('#cur-page-input').val()
@@ -188,7 +241,7 @@ const addToTable = (transaction, isNew) => {
         amountClass = amount > 0 ? 'green-text' : 'red-text'
     } else {
         amountText = '$0.00'
-        amountClass = 'yellow-text'
+        amountClass = 'blue-text'
     }
     if (isNew) {
         $('<tr>').prependTo($('tbody'));
@@ -198,7 +251,7 @@ const addToTable = (transaction, isNew) => {
         $('<tr>').appendTo($('tbody'));
         $tr = $('tbody').find('tr:last');
     }
-    $tr.append($('<td>').text(created));
+    $tr.append($('<td>').text(created.substr(0,10)));
     $tr.append($('<td>').text(merchant));
     $tr.append($('<td>').text(amountText).addClass(amountClass))
 
@@ -216,26 +269,25 @@ const renderTable = (page) => {
     for(var i = start; i < end; i++){
         const transaction = pageInstance[i]
         addToTable(transaction, false)
-
     }
 
     $('#page-buttons div').hide()
 
     // Buttons
-    $('#curr-page').html(`${page}`).show()
+    $('#curr-page').html(`${page}`).data("page",parseInt(page)).show()
     if(parseInt(page)+1 <= numPages) {
-        $('#next-page').html(`${parseInt(page)+1}`).data("page",page+1).show()
-        $('#next-button').data("page",page+1).show()
+        $('#next-page').html(`${parseInt(page)+1}`).data("page",parseInt(page)+1).show()
+        $('#next-button').data("page",parseInt(page)+1).show()
     } 
     if (parseInt(page)+2 <= numPages) {
-        $('#next-next-page').html(`${parseInt(page)+2}`).data("page",page+2).show()
+        $('#next-next-page').html(`${parseInt(page)+2}`).data("page",parseInt(page)+2).show()
     }
     if(parseInt(page)-1 >= 1) {
-        $('#prev-page').html(`${parseInt(page)-1}`).data("page",page-1).show()
-        $('#prev-button').data("page",page-1).show()
+        $('#prev-page').html(`${parseInt(page)-1}`).data("page",parseInt(page)-1).show()
+        $('#prev-button').data("page",parseInt(page)-1).show()
     } 
     if (parseInt(page)-2 >= 1) {
-        $('#prev-prev-page').html(`${parseInt(page)-2}`).data("page",page-2).show()
+        $('#prev-prev-page').html(`${parseInt(page)-2}`).data("page",parseInt(page)-2).show()
     }
 }
 
@@ -262,9 +314,55 @@ $('#transaction-amount-earned').click(()=>{
 
 // Prevent negative numbers
 $transactionAmount.change(()=>{
-    const amount = $transactionAmount.val()
+    const amount = parseInt($transactionAmount.val())
     if (amount < 0) {
         $('#transaction-amount-paid').click()
-        $transactionAmount.val(Math.abs(amount))
     }
+    $transactionAmount.val(Math.abs(amount).toFixed(2))
+})
+
+
+// Filtering
+$('select').change(()=>{
+    makeSearch()
+    perPage = $('#display-select option:selected').val()
+
+    const instance = Singleton.getInstance()
+    const time = $('#time-select option:selected').val()
+    const type = $('#type-select option:selected').val()
+
+    let newInstance = instance
+    // Type
+    if (type === 'Neutral') {
+        newInstance = newInstance.filter(({amount}) => amount == 0 )
+    } else if (type === 'Positive') {
+        newInstance = newInstance.filter(({amount}) => amount > 0 )
+    } else if (type === 'Negative') {
+        newInstance = newInstance.filter(({amount}) => amount < 0 )
+    } else {
+        newInstance = newInstance
+    }
+
+    // Date
+    if (time === 'Today') {
+        newInstance = newInstance.filter(({created}) => created === currentDate)
+    } else if (time === 'LastWeek') {
+        var lastWeek = new Date();
+        lastWeek.setDate(lastWeek.getDate() - 30);
+        lastWeek = lastWeek.toISOString().slice(0, 10)
+        newInstance = newInstance.filter(({created}) => created <= currentDate && created >= lastWeek )
+    } else if (time === 'LastMonth') {
+        var lastMonth = new Date();
+        lastMonth.setDate(lastMonth.getDate() - 30);
+        lastMonth = lastMonth.toISOString().slice(0, 10)
+        newInstance = newInstance.filter(({created}) => created <= currentDate && created >= lastMonth)
+    }  else if (time === 'Future') {
+        newInstance = newInstance.filter(({created}) => created > currentDate )
+    } else {
+        newInstance = newInstance
+    }
+    
+
+    Singleton.changeInstance(newInstance)
+    renderTable(1)
 })

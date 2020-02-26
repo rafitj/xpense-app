@@ -47,21 +47,32 @@ const Commands = {
 // Data
 const Singleton = (() => {
     var instance;
+    var originalInstance;
  
-     createInstance = (data) => {
+    createInstance = (data) => {
         const object = new Object(data);
         return object;
     }
 
- 
     return {
         getInstance: (data) => {
             if (!instance) {
                 instance = createInstance(data);
             }
             return instance;
+        },
+        createOriginalInstance: (data) => {
+            originalInstance = createInstance(data)
+            instance = createInstance(data);
+            return originalInstance
+        }, 
+        changeInstance: (data) => {
+            instance = createInstance(data);
+        },
+        refreshInstance: () => {
+            instance = originalInstance
         }
     };
 })();
  
-const perPage = 100
+let perPage = 100
