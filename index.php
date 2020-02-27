@@ -16,12 +16,14 @@
     </div>
 
     <!-- Header -->
-    <div id="header">
-        <img src="./expensifylogoheader.svg" alt = "headerlogo" />
-        <input type=button id="logout-button" value = "Logout"/>
+    <div>
+        <div id="header">
+            <img src="./expensifylogoheader.svg" alt = "headerlogo" />
+            <input type=button id="logout-button" value = "Logout"/>
+        </div>
+        <div class="border"></div>
     </div>
-    <div class="border"></div>
-
+        
     <!-- View -->
     <?php 
             include_once('view.php');

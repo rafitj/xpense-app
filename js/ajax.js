@@ -91,6 +91,7 @@ const loadTransactionsAJAX = (authToken) => {
                 const data = JSON.parse(jsonRes.msg)
                 Singleton.createOriginalInstance(data.transactionList)
                 renderTable(1)
+                sortTable()
                 $authenticatedView.show()
                 $logoutButton.show()
             }

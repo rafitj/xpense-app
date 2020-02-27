@@ -9,13 +9,13 @@
         <div id ="search-filters">
             Date Transacted:
             <select class="filter-select" id="time-select">
+                <option value = "AllTime">All Time </option>
                 <option value="Today">Today </option>
                 <option value="LastWeek" >Last Week </option>
                 <option value = "LastMonth">Last Month </option>
-                <option value = "AllTime">All Time </option>
             </select>
             Transaction Type:
-            <select class="filter-select" id="type-select">
+            <select class="filter-select" id="type-select" >
                 <option value="All">All </option>
                 <option value="Positive">Positive </option>
                 <option value = "Negative">Negative </option>
@@ -38,7 +38,8 @@
                 </tr>
                </thead>
 
-            <tbody id="transactionTableBody"></tbody>
+            <tbody id="transactionTableBody">
+            </tbody>
         </table>
         <div id = "table-pages">
             <div id="page-buttons">
@@ -69,17 +70,17 @@
         <h2>Add Transaction</h2>
         <div id = "main-form">
             <form id="addForm" method="POST" >
-                <div>
+                <div class = "transactionElement">
                     <label for ="transaction-merchant">Merchant </label>
                     <input id="transaction-merchant" placeholder = "Flower Shop" type="text"></input>
                 </div>    
-                <div>
+                <div class = "transactionElement">
                     <label id="amount-label" for ="transaction-amount">Amount ($) </label> 
                     <div id="transaction-amount-paid">Paid</div>
                     <div id="transaction-amount-earned">Earned</div> <br/>
                     <input id="transaction-amount"  min = 0 step = 0.01 placeholder = 1.00 type="number"></input>
                 </div>
-                <div>
+                <div class = "transactionElement">
                     <label for ="transaction-created">Date </label>
                     <input id="transaction-created" type="date"></input>
                 </div>

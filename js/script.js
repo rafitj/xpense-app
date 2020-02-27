@@ -20,6 +20,23 @@ $(document)
   
 
 
+  const adjustTable = () => {
+    var $table = $('table'),
+    $bodyCells = $table.find('tbody tr:first').children(),
+    colWidth;
+    colWidth = $bodyCells.map(function() {
+        return $(this).width();
+    }).get();
+
+
+    $table.find('thead tr').children().each(function(i, v) {
+        $(v).width(colWidth[i]);
+    });  
+    const tableWidth = $('table').width()
+
+    $('td').css("maxWidth",Math.floor(tableWidth/3))
+    $('th').css("maxWidth",Math.floor(tableWidth/3))
+}
 
 
 // Document
@@ -32,41 +49,13 @@ $(document).ready(()=>{
     $authenticatedView.hide()
     $unauthenticatedView.hide()
     $('#transaction-amount-earned').addClass('disabled-amount')
-
-    var $table = $('table'),
-    $bodyCells = $table.find('tbody tr:first').children(),
-    colWidth;
-
-    colWidth = $bodyCells.map(function() {
-        return $(this).width();
-    }).get();
-
-    $table.find('thead tr').children().each(function(i, v) {
-        $(v).width(colWidth[i]);
-    });  
-
     $('#password-caps').hide()
     toggleUserView() // Choose view
     toggleLoginButton()
     $transactionCreated.val(currentDate) // Set new transaction default date
 })
 
-$(window).resize(function() {
-    var $table = $('table'),
-    $bodyCells = $table.find('tbody tr:first').children(),
-    colWidth;
-
-    console.log
-
-    colWidth = $bodyCells.map(function() {
-        return $(this).width();
-    }).get();
-
-    $table.find('thead tr').children().each(function(i, v) {
-        $(v).width(colWidth[i]);
-    });  
-
-}).resize();
+$(window).resize(adjustTable).resize();
 
 
 // Checks Cookies and presents view
@@ -173,15 +162,17 @@ $('#search-table').keyup(()=>{
 
 const makeSearch = () => {
     Singleton.refreshInstance()
-    const newInstance = Singleton.getInstance().filter((page)=>
-        page.created.includes(query) || page.merchant.toLowerCase().includes(query) || 
-        (page.amount/100).toString().includes(query)
-    )
-    Singleton.changeInstance(newInstance)
+    if(query!=='') {
+        const newInstance = Singleton.getInstance().filter((page)=>
+            page.created.includes(query) || page.merchant.toLowerCase().includes(query) || 
+            (page.amount/100).toString().includes(query)
+        )
+        Singleton.changeInstance(newInstance)
+    }
 }
 
 let currSort = {
-    sortBy: 'Merchant',
+    sortBy: 'Date',
     ascending: true
 }
 const sortTable = () => {
@@ -197,6 +188,14 @@ const sortTable = () => {
         if(ascending) pageInstance.sort((a,b)=>a.amount-b.amount)
         else pageInstance.sort((a,b)=>b.amount-a.amount)
     }
+    $('#main-table thead tr').find('th').each((i, v)=>{
+        const elSortBy = $(v).attr('sort-by')
+        if ( elSortBy === sortBy) {
+            $(v).html(`${elSortBy} &nbsp; ${currSort.ascending ? '<i class="fas fa-chevron-up"></i>' : ' <i class="fas fa-chevron-down"></i>'}`)
+        } else {
+            $(v).html(`${elSortBy}`)
+        }
+    })
     renderTable(1)
 }
 $('thead tr th').click((e)=>{
