@@ -73,7 +73,7 @@ const loginUserAJAX = ({email,password}) => {
     })
 }
 
-const loadTransactionsAJAX = (authToken) => {
+const loadTransactionsAJAX = (authToken) =>
     $.ajax({
         url: URLProxy,
         method: Methods.GET,
@@ -104,4 +104,3 @@ const loadTransactionsAJAX = (authToken) => {
             }
         },
     })
-}

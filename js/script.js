@@ -24,15 +24,16 @@ $(document)
     var $table = $('table'),
     $bodyCells = $table.find('tbody tr:first').children(),
     colWidth;
-    colWidth = $bodyCells.map(function() {
+    colWidth = $bodyCells.map( () => {
         return $(this).width();
     }).get();
 
 
-    $table.find('thead tr').children().each(function(i, v) {
-        $(v).width(colWidth[i]);
+    $table.find('thead tr').children().each( (i, v) => {
+        // $(v).width(colWidth[i]);
     });  
     const tableWidth = $('table').width()
+    console.log($bodyCells,colWidth,tableWidth)
     $('td').css("maxWidth",Math.floor(tableWidth/3))
     $('th').css("maxWidth",Math.floor(tableWidth/3))
 }
@@ -51,18 +52,19 @@ $(document).ready(()=>{
     $('#password-caps').hide()
     toggleUserView() // Choose view
     toggleLoginButton()
-    
     $transactionCreated.val(currentDate) // Set new transaction default date
+
 })
 
 $(window).resize(adjustTable).resize();
-
 
 // Checks Cookies and presents view
 const toggleUserView = () => {
     if (Cookies.get(authTokenCookie)){
         const authToken = Cookies.get(authTokenCookie)
-        loadTransactionsAJAX(authToken)
+        loadTransactionsAJAX(authToken).then(()=>{
+            $(window).resize(adjustTable).resize();
+        })
         $unauthenticatedView.hide()
     } else {
         $unauthenticatedView.show()
@@ -87,11 +89,17 @@ const toggleLoginButton = () => {
 
 // Add Transaction Event Handler
 $addTransactionButton.click(()=>{
-    const authToken = Cookies.get(authTokenCookie)
-    const amount = $transactionAmount.val() * 100 * (transactionType === 'earned' ? -1 : 1)
-    const created = $transactionCreated.val()
-    const merchant = $transactionMerchant.val()
-    createTransactionAJAX({authToken,amount,created,merchant})
+    if($.isNumeric($transactionAmount.val())) {
+        const authToken = Cookies.get(authTokenCookie)
+        const amount = Math.round(parseFloat($transactionAmount.val()) * 100) * (transactionType === 'earned' ? -1 : 1)
+        const created = $transactionCreated.val()
+        const merchant = $transactionMerchant.val()
+        createTransactionAJAX({authToken,amount,created,merchant})
+    } else {
+            $addTransactionErrMsg.html(`Enter Valid Amount`)
+            $addTransactionErrAlert.show()
+            $transactionAmount.val('')
+    }
 })
 
 // Reset Transaction form Handler
@@ -164,7 +172,7 @@ const makeSearch = () => {
     Singleton.refreshInstance()
     if(query!=='') {
         const newInstance = Singleton.getInstance().filter((page)=>
-            page.created.includes(query) || page.merchant.toLowerCase().includes(query) || 
+            page.created.match(query) || page.merchant.toLowerCase().includes(query) || 
             (page.amount/100).toString().includes(query)
         )
         Singleton.changeInstance(newInstance)
@@ -258,41 +266,53 @@ const addToTable = (transaction, isNew) => {
 
 const renderTable = (page) => {
     const pageInstance = Singleton.getInstance()
-    const numPages = Math.ceil(pageInstance.length/perPage)
-    // Pagination
-    $('#total-pages').html(` of ${numPages}`)
-    $('#cur-page-input').val(page)
-    $('tbody').empty()
-    const start = perPage*(page-1);
-    const end = Math.min(pageInstance.length, perPage*(page-1)+perPage)
-    for(var i = start; i < end; i++){
-        const transaction = pageInstance[i]
-        addToTable(transaction, false)
-    }
 
-    $('#page-buttons div').hide()
+    if (pageInstance.length === 0 && !$('#no-search-results').length) {
+        $('tbody').empty()
+        $('tbody').hide()
+        $('table').append(`<div id="no-search-results">Oops! No Transactions Found.</div>`)
+    } else if (pageInstance.length === 0) {
 
-    // Buttons
-    $('#curr-page').html(`${page}`).data("page",parseInt(page)).show()
-    if(parseInt(page)+1 <= numPages) {
-        $('#next-page').html(`${parseInt(page)+1}`).data("page",parseInt(page)+1).show()
-        $('#next-button').data("page",parseInt(page)+1).show()
-    } 
-    if (parseInt(page)+2 <= numPages) {
-        $('#next-next-page').html(`${parseInt(page)+2}`).data("page",parseInt(page)+2).show()
+    }else {
+        $('#no-search-results').last().remove();
+        $('tbody').show()
+        const numPages = Math.ceil(pageInstance.length/perPage)
+        // Pagination
+        $('#total-pages').html(` of ${numPages}`)
+        $('#cur-page-input').val(page)
+        $('tbody').empty()
+        const start = perPage*(page-1);
+        const end = Math.min(pageInstance.length, perPage*(page-1)+perPage)
+        for(var i = start; i < end; i++){
+            const transaction = pageInstance[i]
+            addToTable(transaction, false)
+        }
+    
+        $('#page-buttons div').hide()
+    
+        // Buttons
+        $('#curr-page').html(`${page}`).data("page",parseInt(page)).show()
+        if(parseInt(page)+1 <= numPages) {
+            $('#next-page').html(`${parseInt(page)+1}`).data("page",parseInt(page)+1).show()
+            $('#next-button').data("page",parseInt(page)+1).show()
+        } 
+        if (parseInt(page)+2 <= numPages) {
+            $('#next-next-page').html(`${parseInt(page)+2}`).data("page",parseInt(page)+2).show()
+        }
+        if(parseInt(page)-1 >= 1) {
+            $('#prev-page').html(`${parseInt(page)-1}`).data("page",parseInt(page)-1).show()
+            $('#prev-button').data("page",parseInt(page)-1).show()
+        } 
+        if (parseInt(page)-2 >= 1) {
+            $('#prev-prev-page').html(`${parseInt(page)-2}`).data("page",parseInt(page)-2).show()
+        }
     }
-    if(parseInt(page)-1 >= 1) {
-        $('#prev-page').html(`${parseInt(page)-1}`).data("page",parseInt(page)-1).show()
-        $('#prev-button').data("page",parseInt(page)-1).show()
-    } 
-    if (parseInt(page)-2 >= 1) {
-        $('#prev-prev-page').html(`${parseInt(page)-2}`).data("page",parseInt(page)-2).show()
-    }
+    $(window).resize(adjustTable).resize();
 }
 
 $('#page-buttons div').click((e)=>{
     const clickedPage = $(e.currentTarget).data('page')
-    renderTable(clickedPage)
+    renderTable(parseInt(clickedPage))
 })
 
 // Custom Table Lazy Loading on Scroll
@@ -313,18 +333,25 @@ $('#transaction-amount-earned').click(()=>{
 
 // Prevent negative numbers
 $transactionAmount.change(()=>{
-    const amount = parseInt($transactionAmount.val())
-    if (amount < 0) {
-        $('#transaction-amount-paid').click()
+    if ($.isNumeric($transactionAmount.val())) {
+        const amount = parseFloat($transactionAmount.val())
+        $addTransactionErrAlert.hide()
+        if (amount < 0) {
+            $('#transaction-amount-paid').click()
+        }
+        $transactionAmount.val(Math.abs(amount).toFixed(2))
+    } else {
+        $addTransactionErrMsg.html(`Enter Valid Amount`)
+        $addTransactionErrAlert.show()
+        $transactionAmount.val('')
     }
-    $transactionAmount.val(Math.abs(amount).toFixed(2))
 })
 
 
 // Filtering
 $('select').change(()=>{
     makeSearch()
-    perPage = $('#display-select option:selected').val()
+    perPage = parseInt($('#display-select option:selected').val())
 
     const instance = Singleton.getInstance()
     const time = $('#time-select option:selected').val()

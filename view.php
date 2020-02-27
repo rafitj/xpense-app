@@ -37,7 +37,6 @@
                     <th sort-by="Amount">Amount</th>
                 </tr>
                </thead>
-
             <tbody id="transactionTableBody">
             </tbody>
         </table>
@@ -82,7 +81,7 @@
                 </div>
                 <div class = "transactionElement">
                     <label for ="transaction-created">Date </label>
-                    <input id="transaction-created" type="date"></input>
+                    <input id="transaction-created" max = "2999-12-31" type="date"></input>
                 </div>
             </form>
         </div>

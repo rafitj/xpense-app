@@ -8,6 +8,7 @@
 
 #main-form {
     padding: 1rem;
+    margin-top: 0.5rem !important;
 }
 
 #main-table, #main-form {
@@ -19,7 +20,7 @@
 
 
 tbody {
-    height: 25rem;
+    max-height: 25rem;
     overflow: scroll;
     display: block;
     overflow-x: hidden;
@@ -99,7 +100,7 @@ thead tr th:hover {
 @media  (max-width: 1024px) {
     #viewContent {
         flex-direction: column;
-        padding: 0 1rem;
+        padding: 0 1.5rem;
     }
 
     h2 {
@@ -293,4 +294,15 @@ select:hover {
 #search-filters {
     color: var(--grey);
     font-size: var(--body);
+}
+
+#no-search-results {
+    background-color: var(--red);
+    color: var(--white);
+    padding: 2rem 0;
+    text-align: center;
+    margin: 0 auto;
+    font-weight: bold;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
