@@ -33,7 +33,6 @@ $(document)
         $(v).width(colWidth[i]);
     });  
     const tableWidth = $('table').width()
-
     $('td').css("maxWidth",Math.floor(tableWidth/3))
     $('th').css("maxWidth",Math.floor(tableWidth/3))
 }
@@ -52,6 +51,7 @@ $(document).ready(()=>{
     $('#password-caps').hide()
     toggleUserView() // Choose view
     toggleLoginButton()
+    
     $transactionCreated.val(currentDate) // Set new transaction default date
 })
 
