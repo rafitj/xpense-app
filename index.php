@@ -36,7 +36,7 @@
     <!-- Header -->
     <div>
         <div id="header">
-            <img src="./expensifylogoheader.svg" alt = "headerlogo" />
+            <img src="assets/images/expensify_logo_small.svg" alt = "headerlogo" />
             <input type=button id="logout-button" value = "Logout"/>
         </div>
         <div class="border"></div>
@@ -44,8 +44,8 @@
         
     <!-- Views -->
     <?php 
-            include_once('view.php');
-            include_once('form.php');
+            include_once('loginView.php');
+            include_once('userView.php');
     ?>
 
     <!-- Footer -->

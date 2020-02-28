@@ -21,7 +21,7 @@ $(document)
 
 // Dynamically adjust table width
 const adjustTable = () => {
-    $table
+    $table = $('table'),
     $bodyCells = $table.find('tbody tr:first').children(),
     colWidth;
     colWidth = $bodyCells.map( () => {
@@ -99,14 +99,14 @@ $addTransactionButton.click(()=>{
     }
 })
 
-// Reset Transaction form Handler
+// Reset Transaction Form
 $resetTransaction.click(()=>{
     $transactionAmount.val('')
     $transactionCreated.val(currentDate)
     $transactionMerchant.val('')
 })
 
-// Login User Event Handler
+// Login User Event
 $loginButton.click(()=>{
     const email = $loginEmail.val()
     const password = $loginPassword.val()

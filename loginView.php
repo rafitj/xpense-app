@@ -1,6 +1,6 @@
 <!-- Unauthenticated Login Form -->
 <div class="center" id="loginContent">
-    <img class = "login-logo" src = "expensifylogo.svg" alt = "expensify-logo-long" />
+    <img class = "login-logo" src = "assets/images/expensify_logo_main.svg" alt = "expensify-logo-long" />
         <!-- Form Contents -->
         <form id="loginForm" method="POST" >
             <label for = "login-email">Email</label>
@@ -22,7 +22,7 @@
             <br/>
             <input type="button" value="Login" id = "login-button">
         </form>
-    <img class = "login-background" src = "expensifycard.svg" alt = "login-background"/>
+    <img class = "login-background" src = "assets/images/expensify_card.svg" alt = "login-background"/>
 </div>
 <!-- Login Error UI -->
 <div id = "login-err-alert" class = "center">

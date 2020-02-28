@@ -33,6 +33,7 @@ const $loginErrAlert = $('#login-err-alert')
 const $loginDismissErr = $('#login-dismiss-err')
 const $loginErrMsg = $('#login-err-msg')
 const $passwordCapsWarning = $('#password-caps')
+
 // Server
 const authTokenCookie = 'auth-token'
 const URLProxy = 'proxy.php'
