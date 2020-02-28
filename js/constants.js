@@ -1,6 +1,7 @@
+// Current Date: Used as default add transaction date and filters
 const currentDate = new Date().toISOString().slice(0, 10)
 
-// Views Constants
+// Main Views Constants
 const $unauthenticatedView = $('#loginContent')
 const $authenticatedView = $('#viewContent')
 const $loader = $('#loader')
@@ -15,8 +16,12 @@ const $addTransactionErrAlert = $('#add-transac-err-alert')
 const $addTransactionDismissErr = $('#add-transac-dismiss-err')
 const $addTransactionErrMsg = $('#add-transac-err-msg')
 
+// Load Transactions Constants
 const $loadTransactionErrAlert = $('#load-transac-err-alert')
 const $loadTransactionErrMsg = $('#load-transac-err-msg')
+
+// Table Constants 
+const $table = $('table')
 
 // Login Consta$nts
 const $logoutButton = $('#logout-button')
@@ -27,7 +32,7 @@ const $showPasswordButton = $('.show-password')
 const $loginErrAlert = $('#login-err-alert')
 const $loginDismissErr = $('#login-dismiss-err')
 const $loginErrMsg = $('#login-err-msg')
-
+const $passwordCapsWarning = $('#password-caps')
 // Server
 const authTokenCookie = 'auth-token'
 const URLProxy = 'proxy.php'
@@ -44,7 +49,18 @@ const Commands = {
     Authenticate: 'Authenticate'
 }
 
-// Data
+/**
+ * Transaction Singleton
+ * 
+ * The singleton pattern optimizes accessing and updating transaction data
+ * 
+ * This is done by creating an originalInstance (created only on loadTransactionAJAX)
+ * and a modifiable instance for searching/filtering
+ * 
+ * This singleton is placed on the heap to free up stack space and helper methods allow
+ * us to fetch only this instance, modify it or revert instance to original
+ * 
+ */
 const Singleton = (() => {
     var instance;
     var originalInstance;

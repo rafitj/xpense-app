@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Expensify Take-Home Challenge</title>
+    <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/view.css">
     <link rel="stylesheet" type="text/css" href="css/header.css">
@@ -26,7 +27,7 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-     <!-- Loader -->
+     <!-- Global Loader -->
     <div class = "center" id = "loader">
         <div id ="spinner"></div>
         <p>Loading</p>
@@ -41,7 +42,7 @@
         <div class="border"></div>
     </div>
         
-    <!-- View -->
+    <!-- Views -->
     <?php 
             include_once('view.php');
             include_once('form.php');
@@ -50,7 +51,7 @@
     <!-- Footer -->
     <div class="footer-border"></div>
 
-    <!-- Javascript Files, we've included JQuery here, feel free to use at your discretion. Add whatever else you may need here too. -->
+    <!-- Javascript Files: jQuery, jQuery Cookies and FontAwesome -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <script type="text/javascript" src="js/constants.js"></script>

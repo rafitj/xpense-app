@@ -9,7 +9,7 @@
  * - Use arrow functions for performance/reduced clutter
  */
 
-// Loader
+// Loader shows and hides on every AJAX call
 $(document)
   .ajaxStart(() => {
     $loader.show()
@@ -19,21 +19,16 @@ $(document)
   })
   
 
-
-  const adjustTable = () => {
-    var $table = $('table'),
+// Dynamically adjust table width
+const adjustTable = () => {
+    $table
     $bodyCells = $table.find('tbody tr:first').children(),
     colWidth;
     colWidth = $bodyCells.map( () => {
         return $(this).width();
     }).get();
 
-
-    $table.find('thead tr').children().each( (i, v) => {
-        // $(v).width(colWidth[i]);
-    });  
     const tableWidth = $('table').width()
-    console.log($bodyCells,colWidth,tableWidth)
     $('td').css("maxWidth",Math.floor(tableWidth/3))
     $('th').css("maxWidth",Math.floor(tableWidth/3))
 }
@@ -49,7 +44,7 @@ $(document).ready(()=>{
     $authenticatedView.hide()
     $unauthenticatedView.hide()
     $('#transaction-amount-earned').addClass('disabled-amount')
-    $('#password-caps').hide()
+    $passwordCapsWarning.hide()
     toggleUserView() // Choose view
     toggleLoginButton()
     $transactionCreated.val(currentDate) // Set new transaction default date
@@ -58,7 +53,7 @@ $(document).ready(()=>{
 
 $(window).resize(adjustTable).resize();
 
-// Checks Cookies and presents view
+// Checks Cookies and presents authenticated or unauthenticated view (loadsTransactions if authenticated)
 const toggleUserView = () => {
     if (Cookies.get(authTokenCookie)){
         const authToken = Cookies.get(authTokenCookie)
@@ -73,9 +68,11 @@ const toggleUserView = () => {
     }
 }
 
+// Disable login if no input to avoid unessacary login attempts
 const toggleLoginButton = () => {
     const noEmail = $loginEmail.val() === ''
     const noPassword = $loginPassword.val() === ''
+    // Chrome bug shows autofilled elements to have no value
     const autofillEmail = $('#login-email:-webkit-autofill').length > 0 
     const autofillPass = $('#login-password:-webkit-autofill').length > 0 
     if (autofillEmail || !noEmail) {
@@ -119,9 +116,9 @@ $loginButton.click(()=>{
 // Login Utilities
 $loginPassword.keyup((e)=>{
     if (e.originalEvent.getModifierState("CapsLock")) {
-        $('#password-caps').show()
+        $passwordCapsWarning.show()
       } else {
-        $('#password-caps').hide()
+        $passwordCapsWarning.hide()
       }
 })
 

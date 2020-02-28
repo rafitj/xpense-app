@@ -1,14 +1,20 @@
 <?php
 
+// Use ENV variables for sensitive information
 $partnerName = $_ENV['PARTNER_NAME'];
 $partnerPassword = $_ENV['PARTNER_PASSWORD'];
 
-function createRequestUrl($paramaters){
+// Fetch file contents depending on built URL
+function fetchFileContents($paramaters){
 	$url = 'https://api.expensify.com/?' . http_build_query($paramaters);
 	return @file_get_contents($url);
 }
 
-//is valid command coming in?
+function formResponse($err, $msg, $status){
+	$response = array('error' => $err, 'msg' => $msg, 'status'=>$status); 
+	return json_encode($response);
+}
+
 if( isset($_POST["command"]) || isset($_GET["command"]) ){
 	if($_POST["command"]==="Authenticate" ){
 		//do we have correct paramaters
@@ -21,11 +27,10 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 				"partnerPassword" => $partnerPassword,
 				"partnerUserID" => $partnerUserID,
 				"partnerUserSecret" => $partnerUserSecret);
-			$content = createRequestUrl($paramaters);
+			$content = fetchFileContents($paramaters);
 			
 			if ($content === FALSE) {
-				$response = array('error' => true, 'msg' => 'Please Check Network Connection'); 
-				$msg = json_encode($response);
+				$msg = formResponse(true, 'Please Check Network Connection', 500);
 				exit($msg);
 			}
 			
@@ -79,7 +84,7 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 				"returnValueList" => $_GET["returnValueList"]
 				);
 
-			$content = createRequestUrl($paramaters);
+			$content = fetchFileContents($paramaters);
 		
 			if ($content === FALSE) {
 				$response = array('error' => true, 'msg' => 'Please Check Network Connection'); 
@@ -132,7 +137,7 @@ if( isset($_POST["command"]) || isset($_GET["command"]) ){
 					"merchant" => $_POST["merchant"],
 				);
 
-				$content = createRequestUrl($paramaters);
+				$content = fetchFileContents($paramaters);
 		
 				if ($content === FALSE) {
 					$response = array('error' => true, 'msg' => 'Failed: Please Check Network Connection'); 
