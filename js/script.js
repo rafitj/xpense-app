@@ -21,7 +21,7 @@ $(document)
 
 // Dynamically adjust table width
 const adjustTable = () => {
-    $table = $('table'),
+    var $table = $('table'),
     $bodyCells = $table.find('tbody tr:first').children(),
     colWidth;
     colWidth = $bodyCells.map( () => {
