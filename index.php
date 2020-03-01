@@ -1,51 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Expensify Take-Home Challenge</title>
     <!-- Stylesheets -->
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/view.css">
-    <link rel="stylesheet" type="text/css" href="css/header.css">
-    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 </head>
+
 <body>
-     <!-- Global Loader -->
-    <div class = "center" id = "loader">
-        <div id ="spinner"></div>
+    <!-- Global Loader -->
+    <div class="center" id="loader">
+        <div id="spinner"></div>
         <p>Loading</p>
     </div>
 
     <!-- Header -->
     <div>
         <div id="header">
-            <img src="assets/images/expensify_logo_small.svg" alt = "headerlogo" />
-            <input type=button id="logout-button" value = "Logout"/>
+            <img src="assets/images/expensify_logo_small.svg" alt="headerlogo" />
+            <input type=button id="logout-button" value="Logout" />
         </div>
         <div class="border"></div>
     </div>
-        
+
     <!-- Views -->
-    <?php 
-            include_once('loginView.php');
-            include_once('userView.php');
+    <?php
+    include_once('loginView.php');
+    include_once('userView.php');
     ?>
 
     <!-- Footer -->
@@ -60,4 +61,5 @@
     <script src="https://kit.fontawesome.com/1c78a49af0.js" crossorigin="anonymous"></script>
 
 </body>
+
 </html>

@@ -1,0 +1,99 @@
+:root {
+  --bg-color: #f1f1f1;
+  --white: #f1f1f1;
+  --grey: #495761;
+  --blue: #52a8dc;
+  --yellow: #f7c644;
+  --green: #64c679;
+  --red: #e67871;
+  --title: 20px;
+  --header: 15px;
+  --body: 12px;
+}
+
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  transition: all 0.25s ease;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+.blue {
+  background-color: var(--blue);
+  color: var(--white);
+}
+.green {
+  background-color: var(--green);
+  color: var(--white);
+}
+.yellow {
+  background-color: var(--yellow);
+  color: var(--white);
+}
+.red-text {
+  color: var(--red);
+}
+.green-text {
+  color: var(--green);
+}
+.blue-text {
+  color: var(--blue);
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+
+#header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 4rem;
+}
+
+#header img {
+    width: 3.5rem;
+}
+
+.border {
+    height: 0.4rem;
+    width: 95vw;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, var(--yellow), var(--yellow) 33.33%, var(--green) 33.33%, var(--green) 66.66%, var(--blue) 66.66%);
+}
+
+#logout-button{
+    color:var(--white);
+    background-color: var(--blue);
+    border: 2px solid rgba(255, 255, 255, 0);
+    filter:none;
+    opacity: 1;
+    margin: 0;
+}
+
+#logout-button:hover{
+    color:var(--green);
+    background-color: var(--white);
+    border: 2px solid var(--green);
+}
+
+.footer-border {
+    height: 1rem;
+    width: 100vw;
+    margin-top: 1.5rem;
+    background: linear-gradient(to right, var(--yellow), var(--yellow) 33.33%, var(--green) 33.33%, var(--green) 66.66%, var(--blue) 66.66%);
+}

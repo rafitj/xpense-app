@@ -11,19 +11,11 @@
     margin-top: 0.5rem !important;
 }
 
-#main-table, #main-form {
+ #main-form {
     background-color: white;
     border-radius: 10px;
     margin: 1rem 0;
     filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
-}
-
-
-tbody {
-    max-height: 25rem;
-    overflow: scroll;
-    display: block;
-    overflow-x: hidden;
 }
 
 #transactionTable, #transactionForm {
@@ -44,58 +36,7 @@ tbody {
     flex-direction: column;
     justify-content: space-evenly;
 }
-table {
-    border-spacing: 0;
-    color: var(--grey);
-    width: 100%; /* Optional */
-}
-th {
-    background-color: var(--grey);
-    color: var(--white);
-    padding: 1rem 0;
-    text-align: center;
-    border: none;
-}
-td {
-    padding: 0.5rem 0;
-    text-align: center;
-    display: inline-block;
-}
 
-tr { display: block; overflow: scroll; 
-    border-bottom: 1px solid var(--white);
-}
-
-tbody td, thead th {
-    width: 32%; 
-    display: inline-block;
-    overflow: scroll;
-    max-width: 10rem;
-}
-thead{
-    background-color: var(--grey);
-}
-thead tr, tbody tr {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-tbody tr:hover {
-    transform: scale(1.05);
-    background-color: var(--white);
-    filter: drop-shadow( 0 0 15px rgba(0, 0, 0, .3));
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-thead tr th:hover {
-    cursor: pointer;
-    opacity: 0.7;
-}
-
-#transactionTableBody{
-    width: 40rem;
-}
 
 @media  (max-width: 1024px) {
     #viewContent {
@@ -141,7 +82,7 @@ thead tr th:hover {
 }
 
 #viewContent input[type=text], input[type=date], input[type=number]{
-    padding: 12px 20px;
+    padding: 0 20px;
     margin: 8px auto;
     box-sizing: border-box;
     border: 1.5px solid var(--grey);
@@ -277,7 +218,7 @@ h2 {
 }
 
 select {
-    background-color: var(--white);
+    background-color: white;
     border: 1.5px solid var(--grey);
     color: var(--grey);
     -webkit-appearance: none;
@@ -294,6 +235,7 @@ select:hover {
 #search-filters {
     color: var(--grey);
     font-size: var(--body);
+    margin-top: 0.4rem;
 }
 
 #no-search-results {
@@ -305,4 +247,109 @@ select:hover {
     font-weight: bold;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+
+/* New Table */
+.tableview {
+  position: relative;
+  padding-top: 3.4285714em;
+  color: var(--grey);
+  margin: 1rem 0;
+  filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
+}
+.tableview:before {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  content: "";
+  position: absolute;
+  display: block;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.tableview-holder {
+  display: block;
+  position: static;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 20rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+table {
+  width: 100%;
+  position: static;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+thead tr th, thead tr th:after {
+  white-space: nowrap;
+  position: static;
+  height: 0;
+  line-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+thead tr th:after {
+  content: attr(sort-by);
+  color: transparent;
+  display: inline-block;
+}
+thead tr th:before {
+  content: attr(sort-by);
+  position: absolute;
+  line-height: 3.4285714em;
+  margin-top: -3.4285714em;
+}
+
+.tableview:before {
+  height: 3.4285714em;
+  background-color: var(--grey);
+}
+
+thead tr th {
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  /* background-color: var(--grey); */
+  color: var(--white);
+  /* padding: 1rem 0; */
+  text-align: center;
+  /* border: none; */
+  padding: 0 4rem;
+}
+thead tr th:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+tbody:hover tr td {
+  opacity: .4;
+  background-color: var(--white);
+}
+tbody:hover tr:hover td{
+  opacity: 1;
+  cursor: pointer;
+  background-color: white;
+}
+tbody:hover tr:hover {
+  filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
+}
+tbody tr {
+    border-bottom: 1px solid var(--white);
+}
+
+tbody tr td {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+#main-table {
+    background-color: white;
+    margin-top: 0;
 }

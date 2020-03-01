@@ -1,70 +1,75 @@
 <!-- Load Transaction Error -->
-<div class="center" id = "load-transac-err-alert">
-        <div id = "load-transac-err-msg"></div>
+<div class="center" id="load-transac-err-alert">
+    <div id="load-transac-err-msg"></div>
 </div>
 
 
 <!-- Authenticated View Content -->
-<div id="viewContent">    
+<div id="viewContent">
     <!-- Transaction Table -->
+
     <div id="transactionTable">
         <h2>My Transactions</h2>
         <!-- Table Search -->
-        <input id ="search-table" type="text" placeholder="Search Transactions By Merchant, Date or Amount...">
+        <input id="search-table" type="text" placeholder="Search Transactions By Merchant, Date or Amount...">
         <!-- Table Filters -->
-        <div id ="search-filters">
+        <div id="search-filters">
             Date Transacted:
             <select class="filter-select" id="time-select">
-                <option value = "AllTime">All Time </option>
+                <option value="AllTime">All Time </option>
                 <option value="Today">Today </option>
-                <option value="LastWeek" >Last Week </option>
-                <option value = "LastMonth">Last Month </option>
+                <option value="LastWeek">Last Week </option>
+                <option value="LastMonth">Last Month </option>
             </select>
             Transaction Type:
-            <select class="filter-select" id="type-select" >
+            <select class="filter-select" id="type-select">
                 <option value="All">All </option>
                 <option value="Positive">Positive </option>
-                <option value = "Negative">Negative </option>
-                <option value = "Neutral">Neutral </option>
+                <option value="Negative">Negative </option>
+                <option value="Neutral">Neutral </option>
             </select>
             Display:
-            <select class="filter-select" id="display-select"> 
+            <select class="filter-select" id="display-select">
                 <option value=100>100 rows</option>
                 <option value=50>50 rows</option>
                 <option value=10>10 rows</option>
             </select>
         </div>
         <!-- Table Data -->
-        <table id="main-table">
-            <thead>
-                <tr>
-                    <th sort-by="Date">Date</th>
-                    <th sort-by="Merchant">Merchant</th>
-                    <th sort-by="Amount">Amount</th>
-                </tr>
-               </thead>
-            <tbody id="transactionTableBody">
-            </tbody>
-        </table>
+        <div class="tableview">
+            <div class="tableview-holder">
+                <table id="main-table">
+                    <thead>
+                        <tr>
+                            <th sort-by="Date"></th>
+                            <th sort-by="Merchant"></th>
+                            <th sort-by="Amount"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody"></tbody>
+                </table>
+            </div>
+        </div>
         <!-- Table Pages/Button -->
-        <div id = "table-pages">
+        <div id="table-pages">
             <!-- Pages Buttons -->
             <div id="page-buttons">
-                <div id = "prev-button">
+                <div id="prev-button">
                     <i class="fas fa-angle-left"></i>
                 </div>
-                <div id = "prev-prev-page"></div>
-                <div id = "prev-page"></div>
-                <div id = "curr-page"></div>
-                <div id = "next-page"></div>
-                <div id = "next-next-page"></div>
-                <div id = "next-button">
+                <div id="prev-prev-page"></div>
+                <div id="prev-page"></div>
+                <div id="curr-page"></div>
+                <div id="next-page"></div>
+                <div id="next-next-page"></div>
+                <div id="next-button">
                     <i class="fas fa-angle-right"></i>
                 </div>
             </div>
             <!-- Pages Via Input -->
             <div id="jump-pages-input">
-                Go to page <input id ="cur-page-input" min="1" type="number"> <p id="total-pages"></p>
+                Go to page <input id="cur-page-input" min="1" type="number">
+                <p id="total-pages"></p>
             </div>
         </div>
     </div>
@@ -72,32 +77,32 @@
     <!-- Add Transaction Form -->
     <div id="transactionForm">
         <h2>Add Transaction</h2>
-        <div id = "main-form">
-            <form id="addForm" method="POST" >
-                <div class = "transactionElement">
-                    <label for ="transaction-merchant">Merchant </label>
-                    <input id="transaction-merchant" placeholder = "Flower Shop" type="text"></input>
-                </div>    
-                <div class = "transactionElement">
-                    <label id="amount-label" for ="transaction-amount">Amount ($) </label> 
+        <div id="main-form">
+            <form id="addForm" method="POST">
+                <div class="transactionElement">
+                    <label for="transaction-merchant">Merchant </label>
+                    <input id="transaction-merchant" placeholder="Flower Shop" type="text"></input>
+                </div>
+                <div class="transactionElement">
+                    <label id="amount-label" for="transaction-amount">Amount ($) </label>
                     <!-- Explicit User Amounts (Positive/Negative) -->
                     <div id="transaction-amount-paid">Paid</div>
-                    <div id="transaction-amount-earned">Earned</div> <br/>
-                    <input id="transaction-amount"  min = 0 step = 0.01 placeholder = 1.00 type="number"></input>
+                    <div id="transaction-amount-earned">Earned</div> <br />
+                    <input id="transaction-amount" min=0 step=0.01 placeholder=1.00 type="number"></input>
                 </div>
-                <div class = "transactionElement">
-                    <label for ="transaction-created">Date </label>
-                    <input id="transaction-created" max = "2999-12-31" type="date"></input>
+                <div class="transactionElement">
+                    <label for="transaction-created">Date </label>
+                    <input id="transaction-created" min="1900-01-01" max="2999-12-31" type="date"></input>
                 </div>
             </form>
         </div>
         <!-- Add Transaction Buttons -->
-        <input class = "green" type="button" value="Add" id="add-transaction"/>
-        <input class = "yellow" type="button" value="Reset" id="reset-transaction"/>
-        <div id = "add-transac-err-alert">
-        <!-- Add Transaction Error -->
-        <div id = "add-transac-err-msg"></div>
-            <div id = "add-transac-dismiss-err"><i class="fas fa-window-close"></i></div>
+        <input class="green" type="button" value="Add" id="add-transaction" />
+        <input class="yellow" type="button" value="Reset" id="reset-transaction" />
+        <div id="add-transac-err-alert">
+            <!-- Add Transaction Error -->
+            <div id="add-transac-err-msg"></div>
+            <div id="add-transac-dismiss-err"><i class="fas fa-window-close"></i></div>
         </div>
     </div>
 </div>
