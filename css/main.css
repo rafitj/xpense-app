@@ -1,40 +1,76 @@
+/* Root variables for Brand Consistency */
 :root {
-  --bg-color: #f1f1f1;
   --white: #f1f1f1;
   --grey: #495761;
   --blue: #52a8dc;
   --yellow: #f7c644;
   --green: #64c679;
   --red: #e67871;
+  --orange: #f7c74480;
+  --pure-white: white;
   --title: 20px;
   --header: 15px;
   --body: 12px;
 }
 
+/* Global Styles */
 * {
   font-family: Arial, Helvetica, sans-serif;
   transition: all 0.25s ease;
 }
 
+/* Body Flex for Responsiveness */
 body {
   margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-  background-color: var(--bg-color);
+  background-color: var(--white);
+}
+
+/* General Color Classes and Text */
+.blue,
+.green,
+.red,
+.yellow {
+  color: var(--white);
+  border: 1px solid transparent;
 }
 .blue {
   background-color: var(--blue);
-  color: var(--white);
 }
 .green {
   background-color: var(--green);
-  color: var(--white);
 }
 .yellow {
   background-color: var(--yellow);
-  color: var(--white);
+}
+.red {
+  background-color: var(--red);
+}
+.blue:hover,
+.green:hover,
+.red:hover,
+.yellow:hover {
+  background-color: var(--white);
+  border: 1px solid transparent;
+}
+.blue:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+.green:hover {
+  color: var(--green);
+  border-color: var(--green);
+}
+.yellow:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+.red:hover {
+  color: var(--red);
+  border-color: var(--red);
 }
 .red-text {
   color: var(--red);
@@ -45,7 +81,11 @@ body {
 .blue-text {
   color: var(--blue);
 }
+.yellow-text {
+  color: var(--yellow);
+}
 
+/* Centering Positioning Classes */
 .center {
   margin: 0;
   position: absolute;
@@ -55,45 +95,101 @@ body {
   transform: translate(-50%, -50%);
 }
 
-
-#header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 4rem;
+/* Header Styles */
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4rem;
 }
 
 #header img {
-    width: 3.5rem;
+  width: 3.5rem;
 }
 
-.border {
-    height: 0.4rem;
-    width: 95vw;
-    margin: 0 auto;
-    margin-bottom: 1rem;
-    background: linear-gradient(to right, var(--yellow), var(--yellow) 33.33%, var(--green) 33.33%, var(--green) 66.66%, var(--blue) 66.66%);
+.header-border {
+  height: 0.4rem;
+  margin: 0 auto;
+  margin-bottom: 1rem;
 }
 
-#logout-button{
-    color:var(--white);
-    background-color: var(--blue);
-    border: 2px solid rgba(255, 255, 255, 0);
-    filter:none;
-    opacity: 1;
+#logout-button {
     margin: 0;
 }
 
-#logout-button:hover{
-    color:var(--green);
-    background-color: var(--white);
-    border: 2px solid var(--green);
+/* Footer Styles */
+.footer-border {
+  height: 1rem;
+  margin-top: 1.5rem;
 }
 
-.footer-border {
-    height: 1rem;
-    width: 100vw;
-    margin-top: 1.5rem;
-    background: linear-gradient(to right, var(--yellow), var(--yellow) 33.33%, var(--green) 33.33%, var(--green) 66.66%, var(--blue) 66.66%);
+/* Spinner Animation */
+#loader {
+  z-index: 999;
+}
+#loader p {
+  margin-top: 2.4rem;
+  color: var(--grey);
+  opacity: 0.8;
+}
+#spinner {
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  transform: rotate(89deg);
+  border-radius: 5px;
+  margin: 0 auto;
+}
+#spinner:before,
+#spinner:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 0.25em;
+  transform: translate(-50%, -50%);
+}
+#spinner:before {
+  animation: before 2s infinite;
+}
+#spinner:after {
+  animation: after 2s infinite;
+}
+@keyframes before {
+  0% {
+    width: 0.5em;
+    box-shadow: 2em -1.5em var(--green), -2em 1.5em var(--yellow);
+  }
+  35% {
+    width: 3.5em;
+    box-shadow: 0 -1.5em var(--green), 0 1.5em var(--yellow);
+  }
+  70% {
+    width: 0.5em;
+    box-shadow: -2em -1.5em var(--green), 2em 1.5em var(--yellow);
+  }
+  100% {
+    box-shadow: 2em -1.5em var(--green), -2em 1.5em var(--yellow);
+  }
+}
+@keyframes after {
+  0% {
+    height: 0.5em;
+    box-shadow: 1.5em 2em var(--blue), -1.5em -2em var(--yellow);
+  }
+  35% {
+    height: 3.5em;
+    box-shadow: 1.5em 0 var(--blue), -1.5em 0 var(--yellow);
+  }
+  70% {
+    height: 0.5em;
+    box-shadow: 1.5em -2em var(--blue), -1.5em 2em var(--yellow);
+  }
+  100% {
+    box-shadow: 1.5em 2em var(--blue), -1.5em -2em var(--yellow);
+  }
 }

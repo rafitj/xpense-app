@@ -1,262 +1,125 @@
 #viewContent {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: center;
-    padding: 0 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0 1.5rem;
 }
 
-#main-form {
-    padding: 1rem;
-    margin-top: 0.5rem !important;
+#transactionTable,
+#addTransactionForm {
+  padding: 0 1rem;
 }
 
- #main-form {
-    background-color: white;
-    border-radius: 10px;
-    margin: 1rem 0;
-    filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
+#viewContent .form_input {
+  padding: 0 20px;
+  margin: 8px auto;
+  border: 1.5px solid var(--grey);
+  width: 100%;
 }
 
-#transactionTable, #transactionForm {
-    padding: 0 1rem;
+#viewContent .form_label {
+  color: var(--grey);
 }
 
-#transactionForm {
-    flex-wrap: wrap;
+#viewContent h2 {
+  color: var(--grey);
+  display: inline-block;
+  margin: 0.5rem 0;
 }
 
-#transactionForm .transactionElement {
-    flex-grow: 1;
-    margin: 0 0.5rem
+/* Add Transaction Form */
+#addTransactionForm {
+  flex-wrap: wrap;
 }
 
-#addForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+#addTransactionForm form {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
-
-@media  (max-width: 1024px) {
-    #viewContent {
-        flex-direction: column;
-        padding: 0 1.5rem;
-    }
-
-    h2 {
-        margin: 0.5rem 0;
-    }
-    #transactionForm {
-        order: 0;
-        padding: 0;
-        width: 100%;
-    }
-    #transactionTable{
-        order: 1;
-        padding: 0;
-        width: 100%;
-    }
-    #transactionTableBody {
-        height: 15rem;
-        width: 100%;
-    }
-    #addForm {
-        flex-direction: row;
-    }
-
-    #add-transac-err-alert {
-        display: inline-block;
-        padding: 10px 20px;
-    }
-    #main-form {
-        padding: 0.5rem;
-    }
-}
-
-
-@media  (max-width: 680px) {
-    #addForm {
-        flex-direction: column;
-    }
-}
-
-#viewContent input[type=text], input[type=date], input[type=number]{
-    padding: 0 20px;
-    margin: 8px auto;
-    box-sizing: border-box;
-    border: 1.5px solid var(--grey);
-    border-radius: 5px;
-    background-color: white;
-    opacity: 0.8;
-    font-size: var(--header);
-    width: 100%;
-    height: 2.5rem;
-}
-#viewContent input[type=text]:focus, input[type=date]:focus, input[type=number]:focus{
-    opacity: 0.9;
-    outline:none;
-    box-shadow: none;
-    filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .2));
-}
-#viewContent label{
-    text-align: left;
-    padding: 0;
-    margin: 0;
-    font-size: var(--header);
-    color: var(--grey);
-    font-weight: bold;
-    margin-top: 0.5rem;
-    display: block;
+#addTransactionForm .transactionElement {
+  flex-grow: 1;
+  margin: 0 0.5rem;
 }
 
 #amount-label {
-    display: inline-block !important;
-}
-
-h2 {
-    color: var(--grey);
-    display: inline-block;
-    margin: 0.5rem 0;
-}
-
-#cur-page-input {
-    width: 3.25rem;
-    padding: 0.5rem 0.15rem 0.5rem 0.5rem;
-    background-color: var(--white);
-    border: 1px solid var(--blue);
-    margin: 0;
-    text-align: center;
-}
-
-#total-pages {
-    display: inline-block;
-    margin: 0;
-}
-
-#jump-pages-input{
-    color: var(--grey);
-    display: inline-block;
-}
-
-#search-table {
-    width: 100%;
-    margin: 0 !important;
-}
-
-#transaction-merchant{
-    width: 100%;
-}
-
-#page-buttons {
-    display: inline-block;
-}
-#page-buttons div{
-    width: 2rem;
-    padding: 0.5rem 0;
-    background-color: var(--white);
-    color: var(--blue);
-    border-radius: 5px;
-    display: inline-block;
-    text-align: center;
-    border: 1px solid var(--blue)
-}
-
-#page-buttons div:hover{
-    background-color: var(--grey);
-    color: var(--white);
-    cursor: pointer;
-    filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
-}
-
-#curr-page {
-    background-color: var(--blue) !important;
-    color: var(--white) !important;
-}
-
-#table-pages {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: inline-block !important;
 }
 
 #transaction-amount-paid {
-    margin-left: 0.1rem;
-    font-size: var(--body);
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    background-color: var(--red);
-    border-radius: 5px;
-    color: white;
-}
-
-#transaction-amount-paid:hover {
-    transform: scale(1.05);
-    cursor: pointer;
-}
-
-#transaction-amount-earned {
-    font-size: var(--body);
-    padding: 0.25rem 0.5rem;
-    display: inline-block;
-    background-color: var(--green);
-    border-radius: 5px;
-    color: white;
-}
-
-#transaction-amount-earned:hover {
-    transform: scale(1.05);
-    cursor: pointer;
+  margin-left: 0.1rem;
 }
 
 .disabled-amount {
-    opacity: 0.4;
+  opacity: 0.4 !important;
 }
 
-.new-row {
-    background-color: #f7c74480;
+#add-transaction,
+#reset-transaction {
+  margin: 0 0.5rem 1rem 0;
 }
 
-select {
-    background-color: white;
-    border: 1.5px solid var(--grey);
-    color: var(--grey);
-    -webkit-appearance: none;
-    padding: 0.5rem 1rem;
-    filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
-    margin: 0.5rem 1rem 0 0.3rem;
+/* Error Alerts */
+#add-transac-err-msg {
+  display: inline-block;
+}
+#add-transac-err-alert {
+  width: auto;
 }
 
-select:hover {
-    filter: drop-shadow( 0 0 12px rgba(0, 0, 0, .2));
-    cursor: pointer;
+/* Table Search & Filtering */
+#search-table {
+  width: 100%;
+  margin: 0 !important;
 }
 
 #search-filters {
-    color: var(--grey);
-    font-size: var(--body);
-    margin-top: 0.4rem;
+  color: var(--grey);
+  font-size: var(--body);
+  margin-top: 0.4rem;
+}
+
+#search-filters select {
+  background-color: var(--pure-white);
+  border: 1.5px solid var(--grey);
+  color: var(--grey);
+  -webkit-appearance: none;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 1rem 0 0.3rem;
+}
+
+#search-filters select:hover {
+  cursor: pointer;
+}
+
+/* Table Extras */
+.new-row {
+  background-color: var(--orange);
 }
 
 #no-search-results {
-    background-color: var(--red);
-    color: var(--white);
-    padding: 2rem 0;
-    text-align: center;
-    margin: 0 auto;
-    font-weight: bold;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+  background-color: var(--red);
+  color: var(--white);
+  padding: 2rem 0;
+  text-align: center;
+  margin: 0 auto;
+  font-weight: bold;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
-
-/* New Table */
+/* Dynamic Scroll Table */
 .tableview {
   position: relative;
   padding-top: 3.4285714em;
   color: var(--grey);
   margin: 1rem 0;
-  filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
 }
 .tableview:before {
   border-top-left-radius: 5px;
@@ -282,8 +145,11 @@ table {
   position: static;
   border-spacing: 0;
   border-collapse: collapse;
+  background-color: white;
+  margin-top: 0;
 }
-thead tr th, thead tr th:after {
+thead tr th,
+thead tr th:after {
   white-space: nowrap;
   position: static;
   height: 0;
@@ -312,44 +178,127 @@ thead tr th {
   cursor: pointer;
   font-weight: bold;
   text-align: center;
-  /* background-color: var(--grey); */
   color: var(--white);
-  /* padding: 1rem 0; */
   text-align: center;
-  /* border: none; */
   padding: 0 4rem;
 }
 thead tr th:hover {
-    cursor: pointer;
-    opacity: 0.7;
+  cursor: pointer;
+  opacity: 0.7;
 }
 tbody:hover tr td {
-  opacity: .4;
+  opacity: 0.4;
   background-color: var(--white);
 }
-tbody:hover tr:hover td{
+tbody:hover tr:hover td {
   opacity: 1;
   cursor: pointer;
   background-color: white;
 }
-tbody:hover tr:hover {
-  filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .1));
-}
 tbody tr {
-    border-bottom: 1px solid var(--white);
+  border-bottom: 1px solid var(--white);
 }
-
 tbody tr td {
   padding: 0.5rem 1rem;
   text-align: center;
-  max-width: 10rem;
+  max-width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
   word-break: break-all;
 }
 
-#main-table {
-    background-color: white;
-    margin-top: 0;
+/* Table Buttons & Pages */
+
+#page-buttons {
+  display: inline-block;
+}
+#page-buttons div {
+  width: 2rem;
+  padding: 0.5rem 0;
+  background-color: var(--white);
+  color: var(--blue);
+  border-radius: 5px;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid var(--blue);
+}
+
+#page-buttons div:hover {
+  background-color: var(--grey);
+  color: var(--white);
+  cursor: pointer;
+}
+
+#curr-page {
+  background-color: var(--blue) !important;
+  color: var(--white) !important;
+}
+
+#table-pages {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#curr-page-input {
+  font-size: var(--header);
+  width: 3rem;
+  padding: 0.2rem 0;
+  border: 1px solid var(--blue);
+  color: var(--grey);
+  margin: 0;
+  text-align: center;
+  border-radius: 5px;
+}
+
+#total-pages {
+  display: inline-block;
+  margin: 0;
+}
+
+#jump-pages-input {
+  color: var(--grey);
+  display: inline-block;
+}
+
+@media (max-width: 1024px) {
+  #viewContent {
+    flex-direction: column;
+    padding: 0 1.5rem;
+  }
+  #viewContent h2 {
+    margin: 0.5rem 0;
+  }
+  #transactionTable,
+  #addTransactionForm {
+    padding: 0;
+    width: 100%;
+  }
+  #addTransactionForm {
+    order: 0;
+  }
+  #transactionTable {
+    order: 1;
+  }
+  #transactionTableBody {
+    height: 15rem;
+    width: 100%;
+  }
+  #addTransactionForm form {
+    flex-direction: row;
+  }
+  #add-transac-err-alert {
+    display: inline-block;
+    padding: 10px 20px;
+  }
+  #addTransactionForm form {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 680px) {
+  #addForm {
+    flex-direction: column;
+  }
 }

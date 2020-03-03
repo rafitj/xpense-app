@@ -1,24 +1,24 @@
 /**
- * This file contains all 3 AJAX calls made to the proxy
- * for this application and associated error handling
+ * @file Performs all 3 AJAX calls made to the proxy and associated error handling
  *
  * Comments:
  *  - Use string constants over loose strings
+ *  - Pass and destructure objects as paramaters to avoid ordering issues
  *  - We return the AJAX call itself so we can perform .then() if needed
  *  - The proxy can't throw an error instead the response is given an error key that we validate in success
  *  - The AJAX error is strictly to check for timeouts to prevent hanging if connection lost during call
  */
 
 /**
- * Creates a Transaction
- * Success: Add transaction to top of table (regardless of filters/search)
+ * @description Creates a Transaction
+ * Success: Add transaction to top of table (regardless of filters/search) and reset form
  * Error: Show detailed error message
- * Timeout: Ask user to check connection
- * @param {authToken, amount, created, merchant}
+ * Timeout: Ask user to check connection after 5 seconds
+ * @param {authToken, amount, created, merchant} transaction 
  */
-const createTransactionAJAX = ({ authToken, amount, created, merchant }) =>
+const createTransactionAJAX = async ({ authToken, amount, created, merchant }) =>
   $.ajax({
-    url: URLProxy,
+    url: URL_PROXY,
     method: Methods.POST,
     data: {
       command: Commands.CreateTransaction,
@@ -39,7 +39,7 @@ const createTransactionAJAX = ({ authToken, amount, created, merchant }) =>
         $addTransactionErrAlert.hide();
         const data = JSON.parse(jsonRes.msg);
         const transaction = data.transactionList[0];
-        addToTable(transaction, true);
+        addToTable(transaction, isRecentTransaction = true);
         $resetTransaction.click();
       }
     },
@@ -52,15 +52,16 @@ const createTransactionAJAX = ({ authToken, amount, created, merchant }) =>
   });
 
 /**
- * Creates a Transaction
+ * @description Creates a Transaction
  * Success: Set cookie to response auth token and toggle view to authenticated
  * Error: Show detailed error message and shake login card
- * Timeout: Ask user to check connection
- * @param {email, password}
+ * Timeout: Ask user to check connection after 5 seconds
+ * @param {email, password} loginCredentials
+ * @async
  */
-const loginUserAJAX = ({ email, password }) =>
+const loginUserAJAX = async ({ email, password }) =>
   $.ajax({
-    url: URLProxy,
+    url: URL_PROXY,
     method: Methods.POST,
     data: {
       command: Commands.Authenticate,
@@ -75,9 +76,9 @@ const loginUserAJAX = ({ email, password }) =>
           `<i class="fas fa-exclamation-triangle"></i> &nbsp; ${jsonRes.msg}`
         );
         $loginErrAlert.show();
-        $unauthenticatedView.addClass("shake-error");
+        $unauthenticatedContent.addClass("shake-error");
         setTimeout(() => {
-          $unauthenticatedView.removeClass("shake-error");
+          $unauthenticatedContent.removeClass("shake-error");
         }, 500);
       } else {
         $loginErrAlert.hide();
@@ -86,9 +87,9 @@ const loginUserAJAX = ({ email, password }) =>
     },
     error: jqXHR => {
       if (jqXHR.statusText === "timeout") {
-        $unauthenticatedView.addClass("shake-error");
+        $unauthenticatedContent.addClass("shake-error");
         setTimeout(() => {
-          $unauthenticatedView.removeClass("shake-error");
+          $unauthenticatedContent.removeClass("shake-error");
         }, 500);
         $loginErrMsg.html(`Please Check Network Connection`);
         $loginErrAlert.show();
@@ -97,15 +98,16 @@ const loginUserAJAX = ({ email, password }) =>
   });
 
 /**
- * Load All Transactions
+ * @description Load All Transactions
  * Success: Create a Transactions Singleton, render transactions table, sort transaction table and show authenticated view
  * Error: Show detailed error message and prevent showing authenticated view
- * Timeout: Ask user to check connection and prevent showing authenticated view
+ * Timeout: Ask user to check connection and prevent showing authenticated view after 12 seconds
  * @param {authToken}
+ * @async
  */
-const loadTransactionsAJAX = authToken =>
+const loadTransactionsAJAX = async authToken =>
   $.ajax({
-    url: URLProxy,
+    url: URL_PROXY,
     method: Methods.GET,
     data: {
       command: Commands.Get,
@@ -116,14 +118,14 @@ const loadTransactionsAJAX = authToken =>
     success: res => {
       const jsonRes = JSON.parse(res);
       if (jsonRes.error) {
-        console.log(jsonRes.msg);
+        $loadTransactionErrMsg.html(`Failed To Load Transactions`);
+        $loadTransactionErrAlert.show();
       } else {
         const data = JSON.parse(jsonRes.msg);
         Singleton.createOriginalInstance(data.transactionList);
-        renderTable(1);
         sortTable();
-        $authenticatedView.show();
-        $logoutButton.show();
+        renderTable();
+        $authenticatedContent.show();
       }
     },
     error: jqXHR => {

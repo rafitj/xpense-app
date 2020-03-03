@@ -131,7 +131,7 @@ if($GET_COMMAND===$GET_REQUEST){
 
 	} else {
 		$jsonResponse = formResponse(true, 'Bad Auth Token', 400);
-		die($jsonResponse);
+		exit($jsonResponse);
 	}
 
 } 
@@ -177,4 +177,4 @@ if($POST_COMMAND===$CREATE_TRANSACTION_REQUEST){
 
 }
 $jsonResponse = formResponse(true, 'Invalid Command Issued', 400);
-die($jsonResponse);
+exit($jsonResponse);

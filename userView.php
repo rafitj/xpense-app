@@ -1,5 +1,5 @@
 <!-- Load Transaction Error -->
-<div class="center" id="load-transac-err-alert">
+<div class="alert center" id="load-transac-err-alert">
     <div id="load-transac-err-msg"></div>
 </div>
 
@@ -7,11 +7,10 @@
 <!-- Authenticated View Content -->
 <div id="viewContent">
     <!-- Transaction Table -->
-
     <div id="transactionTable">
         <h2>My Transactions</h2>
         <!-- Table Search -->
-        <input id="search-table" type="text" placeholder="Search Transactions By Merchant, Date or Amount...">
+        <input class="form_input" id="search-table" type="text" placeholder="Search Transactions By Merchant, Date or Amount...">
         <!-- Table Filters -->
         <div id="search-filters">
             Date Transacted:
@@ -23,7 +22,7 @@
             </select>
             Transaction Type:
             <select class="filter-select" id="type-select">
-                <option value="All">All </option>
+                <option value="AllTypes">All Types </option>
                 <option value="Positive">Positive </option>
                 <option value="Negative">Negative </option>
                 <option value="Neutral">Neutral </option>
@@ -48,6 +47,7 @@
                     </thead>
                     <tbody id="transactionTableBody"></tbody>
                 </table>
+                <div id="no-search-results">Oops! No Transactions Found.</div>
             </div>
         </div>
         <!-- Table Pages/Button -->
@@ -68,41 +68,39 @@
             </div>
             <!-- Pages Via Input -->
             <div id="jump-pages-input">
-                Go to page <input id="cur-page-input" min="1" type="number">
+                Go to page <input id="curr-page-input" min="1" type="number">
                 <p id="total-pages"></p>
             </div>
         </div>
     </div>
 
     <!-- Add Transaction Form -->
-    <div id="transactionForm">
+    <div id="addTransactionForm">
         <h2>Add Transaction</h2>
-        <div id="main-form">
-            <form id="addForm" method="POST">
+            <form method="POST">
                 <div class="transactionElement">
-                    <label for="transaction-merchant">Merchant </label>
-                    <input id="transaction-merchant" placeholder="Flower Shop" type="text"></input>
+                    <label class="form_label" for="transaction-merchant">Merchant </label>
+                    <input class="form_input" id="transaction-merchant" placeholder="Flower Shop" type="text"></input>
                 </div>
                 <div class="transactionElement">
-                    <label id="amount-label" for="transaction-amount">Amount ($) </label>
+                    <label class="form_label" id="amount-label" for="transaction-amount">Amount ($) </label>
                     <!-- Explicit User Amounts (Positive/Negative) -->
-                    <div id="transaction-amount-paid">Paid</div>
-                    <div id="transaction-amount-earned">Earned</div> <br />
-                    <input id="transaction-amount" min=0 step=0.01 placeholder=1.00 type="number"></input>
+                    <div class="red small-button" id="transaction-amount-paid">Paid</div>
+                    <div class="green small-button disabled-amount" id="transaction-amount-earned">Earned</div> <br />
+                    <input class="form_input" id="transaction-amount" min=0 step=0.01 placeholder=1.00 type="number"></input>
                 </div>
                 <div class="transactionElement">
-                    <label for="transaction-created">Date </label>
-                    <input id="transaction-created" min="1900-01-01" max="2999-12-31" type="date"></input>
+                    <label class="form_label" for="transaction-created">Date </label>
+                    <input class="form_input" id="transaction-created" min="1900-01-01" max="2999-12-31" type="date"></input>
                 </div>
             </form>
-        </div>
         <!-- Add Transaction Buttons -->
-        <input class="green" type="button" value="Add" id="add-transaction" />
-        <input class="yellow" type="button" value="Reset" id="reset-transaction" />
-        <div id="add-transac-err-alert">
+        <input class="green button" type="button" value="Add" id="add-transaction" />
+        <input class="yellow button" type="button" value="Reset" id="reset-transaction" />
+        <div class="alert" id="add-transac-err-alert">
             <!-- Add Transaction Error -->
             <div id="add-transac-err-msg"></div>
-            <div id="add-transac-dismiss-err"><i class="fas fa-window-close"></i></div>
+            <div class="dismiss-err" id="add-transac-dismiss-err"><i class="fas fa-window-close"></i></div>
         </div>
     </div>
 </div>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/view.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/components.css">
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
@@ -38,9 +39,9 @@
     <div>
         <div id="header">
             <img src="assets/images/expensify_logo_small.svg" alt="headerlogo" />
-            <input type=button id="logout-button" value="Logout" />
+            <input class="blue button" type=button id="logout-button" value="Logout" />
         </div>
-        <div class="border"></div>
+        <div class="header-border border"></div>
     </div>
 
     <!-- Views -->
@@ -50,13 +51,14 @@
     ?>
 
     <!-- Footer -->
-    <div class="footer-border"></div>
+    <div class="footer-border border"></div>
 
     <!-- Javascript Files: jQuery, jQuery Cookies and FontAwesome -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <script type="text/javascript" src="js/constants.js"></script>
     <script type="text/javascript" src="js/ajax.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
     <script src="https://kit.fontawesome.com/1c78a49af0.js" crossorigin="anonymous"></script>
 

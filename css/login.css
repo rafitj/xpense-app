@@ -1,223 +1,99 @@
-#loginContent{
-    width: 40rem;
+/* Login Styles */
+
+#loginView {
+  width: 40rem;
+}
+#loginView form {
+  margin: 0 auto;
+  text-align: center;
+}
+#login-logo {
+  width: 15rem;
+  margin: 2rem 1rem 0.5rem 5rem;
+}
+#login-background {
+  width: 40rem;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
-.login-logo {
-    width: 15rem;
-    margin: 2rem 1rem 0.5rem 5rem;
-}
-#loginForm{
-    margin: 0 auto;
-    text-align: center;
+/* Form Style Overrides */
+#loginView form .form_input {
+  width: 75%;
+  padding: 12px 20px;
+  border: 3px solid transparent;
 }
 
-.login-background{
-    width: 40rem;
-    filter: drop-shadow( 0 0 15px rgba(0, 0, 0, .2));
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    margin: auto;
-    left: 0;
-    right: 0;
-}
-input[type=text], input[type=password] {
-    width: 75%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 3px solid rgba(255, 255, 255, 0);
-    border-radius: 5px;
-    background-color: white;
-    opacity: 0.8;
-    font-size: var(--header);
-}
-input[type=text]:focus, input[type=password]:focus {
-    opacity: 0.9;
-    outline:none;
-    border: 3px solid var(--blue);
-    box-shadow: none;
-    filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .3));
-}
-label{
-    text-align: left;
-    padding: 0;
-    margin: 0;
-    font-size: var(--header);
-    color: var(--bg-color);
-    margin-left: 5rem;
-    margin-top: 1rem;
-    display: block;
-}
-input[type=button]{
-    border-radius: 10px;
-    padding: 10px 20px;
-    margin: 1rem auto;
-    border: none;
-    opacity: 0.8;
-    font-size: var(--header);
-    filter: drop-shadow( 0 0 10px rgba(0, 0, 0, .2));
+#loginView form .form_input:focus {
+  border-color: var(--blue);
 }
 
-input[type=button]:hover {
-    opacity: 1;
-    filter: drop-shadow( 0 0 15px rgba(0, 0, 0, .4));
-    cursor: pointer;
-    transform: scale(1.05);
+#loginView form .form_label {
+  color: var(--white);
+  margin-left: 5rem;
 }
 
-#login-button:disabled:hover {
-    opacity: 0.7;
-    filter: drop-shadow( 0 0 15px rgba(0, 0, 0, .3));
-    cursor: default;
-    transform: scale(1);
-}
-
-.show-password {
-    opacity: 0.7;
-    color: var(--bg-color);
-    width: 5rem;
-    text-align: left;
-}
-
-.show-password:hover {
-    cursor: pointer;
-    opacity: 1;
-}
-
-
+/* Login Shake Error */
 .shake-error {
-    animation: shake 0.25s;
+  animation: shake 0.25s;
 }
 
 @keyframes shake {
-    0% { transform: translate(-51%, -51%) rotate(0deg); }
-    20% { transform: translate(-53%, -50%) rotate(1deg); }
-    40% { transform: translate(-49%, -51%) rotate(1deg); }
-    60% { transform: translate(-53%, -49%) rotate(0deg); }
-    80% { transform: translate(-51%, -51%) rotate(1deg); }
-    100% { transform: translate(-49%, -52%) rotate(-1deg); }
+  0% {
+    transform: translate(-51%, -51%) rotate(0deg);
+  }
+  20% {
+    transform: translate(-53%, -50%) rotate(1deg);
+  }
+  40% {
+    transform: translate(-49%, -51%) rotate(1deg);
+  }
+  60% {
+    transform: translate(-53%, -49%) rotate(0deg);
+  }
+  80% {
+    transform: translate(-51%, -51%) rotate(1deg);
+  }
+  100% {
+    transform: translate(-49%, -52%) rotate(-1deg);
+  }
 }
 
-#add-transaction, #reset-transaction {
-    margin: 0 0.5rem 1rem 0;
-}
-
-#login-err-alert, #add-transac-err-alert, #load-transac-err-alert {
-    width: 38rem;
-    background-color: var(--red);
-    filter: drop-shadow( 0 0 5px rgba(0, 0, 0, .1));
-    color: var(--white);
-    font-weight: bold;
-    padding: 1rem;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-#add-transac-err-alert {width:auto;}
-
+/* Login Error Alert */
 #login-err-alert {
-    transform: translate(-50%, 15rem) !important;
+  transform: translate(-50%, 15rem);
 }
 
-#login-dismiss-err, #add-transac-dismiss-err {
-    display: inline-block;
-    color: var(--white);
-    font-size: large;
-    margin-left: 0.2rem;
-}
-
-#login-dismiss-err:hover, #add-transac-dismiss-err:hover {
-    transform: scale(1.05);
-    cursor: pointer;
-}
-
-#add-transac-err-msg {
-    display: inline-block;
+/* Login Password Utilities */
+#login-password-utils {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--body);
+  font-weight: bold;
+  padding: 0 5rem;
 }
 
 #password-caps {
-    background-color: var(--grey);
-    color: var(--white);
-    text-align: right;
-    padding: 0.25rem 0.3rem;
-    border-radius: 5px;
-}
-#login-password-utils {
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--body);
-    font-weight: bold;
-    padding: 0 5rem;
+  background-color: var(--grey);
+  color: var(--white);
+  text-align: right;
+  padding: 0.25rem 0.3rem;
+  border-radius: 5px;
 }
 
-#loader{
-    z-index: 999;
+#show-password {
+  opacity: 0.7;
+  color: var(--white);
+  width: 5rem;
+  text-align: left;
+  padding: 0.25rem 0.3rem;
 }
 
-#loader p {
-    margin-top: 2.4rem;
-    color: var(--grey);
-    opacity: 0.8;
-}
-#spinner {
-    position: relative;
-    width: 1.5em;
-    height: 1.5em;
-    transform: rotate(89deg);
-    border-radius: 5px;
-    margin: 0 auto;
-}
-#spinner:before, #spinner:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: block;
-    width: 0.5em;
-    height: 0.5em;
-    border-radius: 0.25em;
-    transform: translate(-50%, -50%);
-}
-#spinner:before {
-    animation: before 2s infinite;
-}
-#spinner:after {
-    animation: after 2s infinite;
-}
-@keyframes before {
-    0% {
-        width: 0.5em;
-        box-shadow: 2em -1.5em var(--green), -2em 1.5em var(--yellow);
-   }
-    35% {
-        width: 3.5em;
-        box-shadow: 0 -1.5em var(--green), 0 1.5em var(--yellow);
-   }
-    70% {
-        width: 0.5em;
-        box-shadow: -2em -1.5em var(--green), 2em 1.5em var(--yellow);
-   }
-    100% {
-        box-shadow: 2em -1.5em var(--green), -2em 1.5em var(--yellow);
-   }
-}
-@keyframes after {
-    0% {
-        height: 0.5em;
-        box-shadow: 1.5em 2em var(--blue), -1.5em -2em var(--yellow);
-   }
-    35% {
-        height: 3.5em;
-        box-shadow: 1.5em 0 var(--blue), -1.5em 0 var(--yellow);
-   }
-    70% {
-        height: 0.5em;
-        box-shadow: 1.5em -2em var(--blue), -1.5em 2em var(--yellow);
-   }
-    100% {
-        box-shadow: 1.5em 2em var(--blue), -1.5em -2em var(--yellow);
-   }
+#show-password:hover {
+  cursor: pointer;
+  opacity: 1;
 }
