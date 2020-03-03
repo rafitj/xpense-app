@@ -216,7 +216,7 @@ tbody tr td {
 #page-buttons div {
   width: 2rem;
   padding: 0.5rem 0;
-  background-color: var(--white);
+  background-color: var(--pure-white);
   color: var(--blue);
   border-radius: 5px;
   display: inline-block;

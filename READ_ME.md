@@ -1,2 +1,0 @@
-- No Styles except font awesome
-- Only Cookies jQuery added

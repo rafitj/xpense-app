@@ -1,5 +1,7 @@
 /**
  * @file Contains mostly atomic (isolated) utility functions called in AJAX functions and event handler functions
+ * - Avoid interdependencies between functions
+ * - Prevent excessive modularizaiton
  */
 
 /**
@@ -20,12 +22,12 @@ const toggleUserView = () => {
 
 /**
  * @description Seaches transaction table with SEARCH_QUERY against amount, date and merchant
- * - We refresh the Singleton instance each search
+ * - We refresh the Transactions instance each search
  * - We update the instance with the filtered instance
  */
 const searchTable = () => {
-  Singleton.refreshInstance(); // Refresh instance with original loaded transactions
-  let newInstance = Singleton.getInstance();
+  TransactionsInstance.refreshInstance(); // Refresh instance with original loaded transactions
+  let newInstance = TransactionsInstance.getInstance();
   if (SEARCH_QUERY !== "") {
     newInstance = newInstance.filter(
       ({ created, merchant, amount }) =>
@@ -35,7 +37,7 @@ const searchTable = () => {
     );
   }
   const filteredNewInstance = filterTable(newInstance); // Filter table after search
-  Singleton.changeInstance(filteredNewInstance);
+  TransactionsInstance.changeInstance(filteredNewInstance);
 };
 
 /**
@@ -44,14 +46,14 @@ const searchTable = () => {
  */
 const sortTable = () => {
   const { sortBy, ascending } = TABLE_SORT;
-  const transactionsInstance = Singleton.getInstance();
-  if (sortBy === Transactions.Merchant) {
+  const transactionsInstance = TransactionsInstance.getInstance();
+  if (sortBy === Transaction.Merchant) {
     if (ascending) {
       transactionsInstance.sort((a, b) => a.merchant.localeCompare(b.merchant));
     } else {
       transactionsInstance.sort((a, b) => b.merchant.localeCompare(a.merchant));
     }
-  } else if (sortBy === Transactions.Date) {
+  } else if (sortBy === Transaction.Date) {
     if (ascending) {
       transactionsInstance.sort((a, b) => (a.created < b.created ? 1 : -1));
     } else {
@@ -74,7 +76,7 @@ const sortTable = () => {
  * @param transaction - transaction object
  * @param {boolean} [isRecentTransaction = false] - if just made from CreateTransaction form
  */
-const addToTable = (transaction, isRecentTransaction = false) => {
+const addTableRow = (transaction, isRecentTransaction = false) => {
   const { amount, created, merchant } = transaction;
   let amountText;
   let amountClass;
@@ -118,7 +120,7 @@ const addToTable = (transaction, isRecentTransaction = false) => {
  * @param {number} [page = 1] - page to render
  */
 const renderTable = (page = 1) => {
-  const transactionsInstance = Singleton.getInstance();
+  const transactionsInstance = TransactionsInstance.getInstance();
   if (transactionsInstance.length === 0) {
     // Clear table and display error
     $tbody.empty();
@@ -136,7 +138,7 @@ const renderTable = (page = 1) => {
     );
     for (var i = startIndex; i < endIndex; i++) {
       const transaction = transactionsInstance[i];
-      addToTable(transaction);
+      addTableRow(transaction);
     }
 
     // Total num pages (with desired rows per page)

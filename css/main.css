@@ -34,7 +34,8 @@ body {
 .green,
 .red,
 .yellow {
-  color: var(--white);
+  color: var(--pure-white);
+  font-weight: bold;
   border: 1px solid transparent;
 }
 .blue {

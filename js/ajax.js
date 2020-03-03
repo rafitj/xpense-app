@@ -1,9 +1,5 @@
 /**
  * @file Performs all 3 AJAX calls made to the proxy and associated error handling
- *
- * Comments:
- *  - Use string constants over loose strings
- *  - Pass and destructure objects as paramaters to avoid ordering issues
  *  - We return the AJAX call itself so we can perform .then() if needed
  *  - The proxy can't throw an error instead the response is given an error key that we validate in success
  *  - The AJAX error is strictly to check for timeouts to prevent hanging if connection lost during call
@@ -39,7 +35,7 @@ const createTransactionAJAX = async ({ authToken, amount, created, merchant }) =
         $addTransactionErrAlert.hide();
         const data = JSON.parse(jsonRes.msg);
         const transaction = data.transactionList[0];
-        addToTable(transaction, isRecentTransaction = true);
+        addTableRow(transaction, isRecentTransaction = true);
         $resetTransaction.click();
       }
     },
@@ -122,7 +118,7 @@ const loadTransactionsAJAX = async authToken =>
         $loadTransactionErrAlert.show();
       } else {
         const data = JSON.parse(jsonRes.msg);
-        Singleton.createOriginalInstance(data.transactionList);
+        TransactionsInstance.createOriginalInstance(data.transactionList);
         sortTable();
         renderTable();
         $authenticatedContent.show();

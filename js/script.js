@@ -1,6 +1,5 @@
 /**
- * This file contains all jQuery event handling and associated
- * DOM manipulation
+ * @file Handles all jQuery events and associated DOM manipulations
  *
  * Comments:
  * - Avoid declaring non-event handler functions (place those in utilities.js)
@@ -22,21 +21,23 @@ $(document)
     $loader.hide();
   });
 
-// Document
+// Document on Ready
 $(document).ready(() => {
-  // Hide contnet initially
+  // Hide all content initially
   $loader.hide();
   $allErrAlerts.hide();
   $authenticatedContent.hide();
   $unauthenticatedContent.hide();
 
-  toggleUserView(); // Choose view
-  
-  $transactionCreated.val(currentDate); // Set new transaction default date to today
+   // Choose view
+  toggleUserView();
+
+   // Set new transaction default date to today
+  $transactionCreated.val(currentDate);
 });
 
 /**
- * Login
+ *  LOGIN EVENTS
  */
 
 // Login User Event
@@ -46,7 +47,15 @@ $loginButton.click(() => {
   loginUserAJAX({ email, password });
 });
 
-// Login Utilities
+// Allow submit on "Enter"
+$loginForm.children("input").keyup(event => {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    $loginButton.click();
+  }
+});
+
+// Indicate capslock when enteirng passowrd
 $loginPassword.keyup(e => {
   if (e.originalEvent.getModifierState("CapsLock")) {
     $passwordCapsWarning.show();
@@ -55,13 +64,7 @@ $loginPassword.keyup(e => {
   }
 });
 
-$("#loginForm input").keyup(event => {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    $loginButton.click();
-  }
-});
-
+// Allow show/hide password
 $showPasswordButton.click(() => {
   const passwordBox = $loginPassword[0];
   if (passwordBox.type === "password") {
@@ -73,27 +76,27 @@ $showPasswordButton.click(() => {
   }
 });
 
+// Dismiss login error alert
 $loginDismissErr.click(() => {
   $loginErrAlert.hide();
 });
 
-
 /**
- * Create Transaction
+ *  CREATE TRANSACTION EVENTS
  */
 
-// Add Transaction Event Handler
+// Add Transaction
 $addTransactionButton.click(() => {
-  if ($.isNumeric($transactionAmount.val())) {
+  const isValidAmount = $.isNumeric($transactionAmount.val()); // Minimum input validation
+  if (isValidAmount) {
     const authToken = Cookies.get(authTokenCookie);
-    const amount =
-      Math.round(parseFloat($transactionAmount.val()) * 100) *
-      (transactionType === "earned" ? -1 : 1);
+    const amountValue = Math.round(parseFloat($transactionAmount.val()) * 100);
+    const amount = amountValue * (TRANSACTION_TYPE === "earned" ? -1 : 1); // Depending on "earned"/"paid" select amount sign
     const created = $transactionCreated.val();
     const merchant = $transactionMerchant.val();
     createTransactionAJAX({ authToken, amount, created, merchant });
   } else {
-    $addTransactionErrMsg.html(`Enter Valid Amount`);
+    $addTransactionErrMsg.html("Enter Valid Amount");
     $addTransactionErrAlert.show();
     $transactionAmount.val("");
   }
@@ -106,90 +109,18 @@ $resetTransaction.click(() => {
   $transactionMerchant.val("");
 });
 
-$("#addTransactionForm form input").keyup(event => {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    $addTransactionButton.click();
-  }
+// Set TransactionType to Paid (negative or zero dollar transaction)
+$transactionAmountPaidBtn.click(() => {
+  $transactionAmountPaidBtn.removeClass("disabled-amount");
+  TRANSACTION_TYPE = TransactionType.Paid;
+  $transactionAmountEarnedBtn.addClass("disabled-amount");
 });
 
-$addTransactionDismissErr.click(() => {
-  $addTransactionErrAlert.hide();
-});
-
-
-/**
- * Logout
- */
-$logoutButton.click(() => {
-  Cookies.remove(authTokenCookie);
-  toggleUserView();
-});
-
-
-
-// Custom Paginated Table
-$("#search-table").keyup(() => {
-  SEARCH_QUERY = $("#search-table")
-    .val()
-    .toLowerCase();
-  searchTable();
-  renderTable();
-});
-
-$("thead tr th").click(e => {
-  const sortBy = $(e.target).attr("sort-by");
-  const isToggleSort = sortBy === TABLE_SORT.sortBy;
-  if (isToggleSort) {
-    TABLE_SORT = { ...TABLE_SORT, ascending: !TABLE_SORT.ascending };
-  } else {
-    TABLE_SORT = { sortBy, ascending: true };
-  }
-  sortTable();
-  renderTable();
-});
-
-$("#curr-page-input").change(() => {
-  let page = $("#curr-page-input").val();
-  const pageInstance = Singleton.getInstance();
-  const numPages = Math.ceil(pageInstance.length / ROWS_PER_PAGE);
-  if (page > numPages) {
-    $("#curr-page-input").val(numPages);
-    page = numPages;
-  } else if (page < 1) {
-    $("#curr-page-input").val(1);
-    page = 1;
-  }
-  renderTable(page);
-});
-
-$("#curr-page-input").keyup(() => {
-  let page = $("#curr-page-input").val();
-  const pageInstance = Singleton.getInstance();
-  const numPages = Math.ceil(pageInstance.length / ROWS_PER_PAGE);
-  if (page > 0 && page <= numPages) {
-    renderTable(page);
-  }
-});
-
-$("#page-buttons div").click(e => {
-  const clickedPage = $(e.currentTarget).data("page");
-  renderTable(parseInt(clickedPage));
-});
-
-// Custom Table Lazy Loading on Scroll
-
-let transactionType = "paid";
-$("#transaction-amount-paid").click(() => {
-  $("#transaction-amount-paid").removeClass("disabled-amount");
-  transactionType = "paid";
-  $("#transaction-amount-earned").addClass("disabled-amount");
-});
-
-$("#transaction-amount-earned").click(() => {
-  $("#transaction-amount-earned").removeClass("disabled-amount");
-  transactionType = "earned";
-  $("#transaction-amount-paid").addClass("disabled-amount");
+// Set TransactionType to Earned (positive or zero dollar transaction)
+$transactionAmountEarnedBtn.click(() => {
+  $transactionAmountEarnedBtn.removeClass("disabled-amount");
+  TRANSACTION_TYPE = TransactionType.Earned;
+  $transactionAmountPaidBtn.addClass("disabled-amount");
 });
 
 // Prevent negative numbers
@@ -208,14 +139,96 @@ $transactionAmount.change(() => {
   }
 });
 
-// Filtering
-$("select").change(() => {
+// Allow submit on "Enter"
+$addTransactionForm.children("form input").keyup(event => {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    $addTransactionButton.click();
+  }
+});
+
+// Dismiss create transaction err alert
+$addTransactionDismissErr.click(() => {
+  $addTransactionErrAlert.hide();
+});
+
+/**
+ * LOGOUT EVENT
+ */
+
+// Logout - remove cookie and refresh view
+$logoutButton.click(() => {
+  Cookies.remove(authTokenCookie);
+  toggleUserView();
+});
+
+/**
+ * Table Filter and Searching
+ */
+
+// Search table on search input keyup
+$("#search-table").keyup(() => {
+  SEARCH_QUERY = $("#search-table")
+    .val()
+    .toLowerCase();
   searchTable();
-  ROWS_PER_PAGE = parseInt($("#display-select option:selected").val());
-  const instance = Singleton.getInstance();
+  renderTable();
+});
 
+// Sort table based on selected column
+$("thead tr th").click(e => {
+  const sortBy = $(e.target).attr("sort-by");
+  const isToggleSort = sortBy === TABLE_SORT.sortBy;
+  if (isToggleSort) {
+    TABLE_SORT = { ...TABLE_SORT, ascending: !TABLE_SORT.ascending };
+  } else {
+    TABLE_SORT = { sortBy, ascending: true };
+  }
+  sortTable();
+  renderTable();
+});
+
+// Jump table page on input
+$("#curr-page-input").change(() => {
+  let page = $("#curr-page-input").val();
+  const pageInstance = TransactionsInstance.getInstance();
+  const numPages = Math.ceil(pageInstance.length / ROWS_PER_PAGE);
+  if (page > numPages) {
+    $("#curr-page-input").val(numPages);
+    page = numPages;
+  } else if (page < 1) {
+    $("#curr-page-input").val(1);
+    page = 1;
+  }
+  renderTable(page);
+});
+
+// Jump table page on input 
+$("#curr-page-input").keyup(() => {
+  let page = $("#curr-page-input").val();
+  const pageInstance = TransactionsInstance.getInstance();
+  const numPages = Math.ceil(pageInstance.length / ROWS_PER_PAGE);
+  if (page > 0 && page <= numPages) {
+    renderTable(page);
+  }
+});
+
+// Traverse pages via buttons to render associated page
+$("#page-buttons div").click(e => {
+  const clickedPage = $(e.currentTarget).data("page");
+  renderTable(parseInt(clickedPage));
+});
+
+// Update table filtering on filter option change
+$("select").change(() => {
+  searchTable(); // We research with current global SEARCH_QUERY to get correct transaction instance
+
+  ROWS_PER_PAGE = parseInt($("#display-select option:selected").val()); // Update rows to display per page
+
+  const instance = TransactionsInstance.getInstance();
+
+  // Filter table and rerender table
   const newInstance = filterTable(instance);
-
-  Singleton.changeInstance(newInstance);
+  TransactionsInstance.changeInstance(newInstance);
   renderTable();
 });
