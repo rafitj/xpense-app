@@ -14,14 +14,14 @@
         <!-- Table Filters -->
         <div id="search-filters">
             Date Transacted:
-            <select class="filter-select" id="time-select">
+            <select class="filter-select" id="date-range-select">
                 <option value="AllTime">All Time </option>
                 <option value="Today">Today </option>
                 <option value="LastWeek">Last Week </option>
                 <option value="LastMonth">Last Month </option>
             </select>
             Transaction Type:
-            <select class="filter-select" id="type-select">
+            <select class="filter-select" id="amount-type-select">
                 <option value="AllTypes">All Types </option>
                 <option value="Positive">Positive </option>
                 <option value="Negative">Negative </option>

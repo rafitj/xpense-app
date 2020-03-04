@@ -1,10 +1,11 @@
 <?php
 
-// Use ENV variables for sensitive information
+// Use ENV variables for keys 
 $partnerName = $_ENV['PARTNER_NAME'];
 $partnerPassword = $_ENV['PARTNER_PASSWORD'];
-$BASE_URL = 'https://api.expensify.com/?';
 
+// Constants
+$BASE_URL = 'https://api.expensify.com/?';
 $AUTHENTICATE_REQUEST = "Authenticate";
 $GET_REQUEST = "Get";
 $CREATE_TRANSACTION_REQUEST = "CreateTransaction";
@@ -15,16 +16,16 @@ $GET_COMMAND = $_GET["command"];
 $requestMade = isset($POST_COMMAND) || isset($GET_COMMAND);
 
 
-// Auth
+// Auth Params
 $partnerUserID = $_POST["partnerUserID"];
 $partnerUserSecret = $_POST["partnerUserSecret"];
 $getAuthToken = $_GET["authToken"];
 
-// Load Transactions
+// Load Transactions Params
 $postAuthToken = $_POST["authToken"];
 $getReturnValueList = $_GET["returnValueList"];
 
-// Create Transaction
+// Create Transaction Params
 $postCreated = $_POST["created"];
 $postMerchant = $_POST["merchant"];
 $postAmount = $_POST["amount"];
@@ -42,8 +43,10 @@ function formResponse($err, $msg, $status){
 }
 
 /**
- *  Early exits
- * 	Avoid branching hell
+ * Proxy Switches
+ *  - Early exits
+ * 	- Avoid branching pyramid of doom
+ *  - Avoid using API error messages (not user-friendly)
  */
 
 if($requestMade === false){
@@ -51,11 +54,12 @@ if($requestMade === false){
 	exit($jsonResponse);
 }
 
+// Authenticate User
 if($POST_COMMAND===$AUTHENTICATE_REQUEST){
 	if(isset($partnerUserID) && isset($partnerUserSecret)){
 		
 		$reqParams = array(
-			"command" => "Authenticate",
+			"command" => $AUTHENTICATE_REQUEST,
 			"partnerName" => $partnerName,
 			"partnerPassword" => $partnerPassword,
 			"partnerUserID" => $partnerUserID,
@@ -72,8 +76,7 @@ if($POST_COMMAND===$AUTHENTICATE_REQUEST){
 
 		switch ($jsonData->jsonCode) {
 			case 200:
-				setcookie("auth-token",$jsonData->authToken, time()+3500);
-				$jsonResponse = formResponse(false, 'Authorization Succesful', 200);
+				$jsonResponse = formResponse(false, json_encode($jsonData), 200);
 				break;
 			case 401:
 				$jsonResponse = formResponse(true, 'Incorrect Password', 401);
@@ -96,6 +99,7 @@ if($POST_COMMAND===$AUTHENTICATE_REQUEST){
 
 }
 
+// Get Transactions
 if($GET_COMMAND===$GET_REQUEST){
 	if( isset($getAuthToken)){
 
@@ -136,6 +140,7 @@ if($GET_COMMAND===$GET_REQUEST){
 
 } 
 
+// Create Transaction
 if($POST_COMMAND===$CREATE_TRANSACTION_REQUEST){
 
 	if(isset($postAuthToken)){
@@ -167,7 +172,7 @@ if($POST_COMMAND===$CREATE_TRANSACTION_REQUEST){
 				exit($jsonResponse);
 			}
 		} else {
-			$jsonResponse = formResponse(true, 'Please Provide Valid Transaction Data', 400);
+			$jsonResponse = formResponse(true, 'Please Include All Transaction Data', 400);
 			exit($jsonResponse);
 		}
 	} else {
@@ -176,5 +181,7 @@ if($POST_COMMAND===$CREATE_TRANSACTION_REQUEST){
 	}
 
 }
+
+// Invalid Command Default
 $jsonResponse = formResponse(true, 'Invalid Command Issued', 400);
 exit($jsonResponse);

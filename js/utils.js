@@ -2,7 +2,9 @@
  * @file Contains mostly atomic (isolated) utility functions called in AJAX functions and event handler functions
  * - Avoid interdependencies between functions
  * - Prevent excessive modularizaiton
+ * - Consume DOM values, avoid DOM style manipulations
  */
+
 
 /**
  * @description Toggles view depending on user authentication status
@@ -66,6 +68,7 @@ const sortTable = () => {
       transactionsInstance.sort((a, b) => b.amount - a.amount);
     }
   }
+
 };
 
 /**
@@ -103,12 +106,13 @@ const addTableRow = (transaction, isRecentTransaction = false) => {
     $tr = $tbody.find("tr:last");
   }
   // Append date, merchant and amount
-  $tr.append($("<td>").text(created.substr(0, 10)));
-  $tr.append($("<td>").text(merchant));
+  $tr.append($("<td>").text(created.substr(0, 10)).addClass('date-col'));
+  $tr.append($("<td>").text(merchant).addClass('merchant-col'));
   $tr.append(
     $("<td>")
       .text(amountText)
       .addClass(amountClass)
+      .addClass('amount-col')
   );
 };
 
@@ -122,12 +126,13 @@ const addTableRow = (transaction, isRecentTransaction = false) => {
 const renderTable = (page = 1) => {
   const transactionsInstance = TransactionsInstance.getInstance();
   if (transactionsInstance.length === 0) {
+    console.log('hey')
     // Clear table and display error
     $tbody.empty();
     $noTableResults.show();
   } else {
     // Remove error and clear table
-    $noTableResults.last().remove();
+    $noTableResults.hide();
     $tbody.empty();
 
     // Populate table from page to table end or
@@ -228,7 +233,7 @@ const filterTable = instance => {
     newInstance = newInstance.filter(
       ({ created }) => created <= currentDate && created >= lastMonth
     );
-  } else if (time === FilterDate.Future) {
+  } else if (filterDate === FilterDate.Future) {
     newInstance = newInstance.filter(({ created }) => created > currentDate);
   } else {
     newInstance = newInstance; // All Time

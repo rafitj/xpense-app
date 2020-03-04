@@ -25,14 +25,14 @@ $(document)
 $(document).ready(() => {
   // Hide all content initially
   $loader.hide();
-  $allErrAlerts.hide();
+  $alerts.hide();
   $authenticatedContent.hide();
   $unauthenticatedContent.hide();
 
-   // Choose view
+  // Choose view
   toggleUserView();
 
-   // Set new transaction default date to today
+  // Set new transaction default date to today
   $transactionCreated.val(currentDate);
 });
 
@@ -87,18 +87,30 @@ $loginDismissErr.click(() => {
 
 // Add Transaction
 $addTransactionButton.click(() => {
-  const isValidAmount = $.isNumeric($transactionAmount.val()); // Minimum input validation
-  if (isValidAmount) {
+  // Minimum input validation since API sends general response
+  const isValidAmount = $.isNumeric($transactionAmount.val()); 
+  const isValidDate = MIN_DATE <= Date.parse($transactionCreated.val()) && Date.parse($transactionCreated.val()) <= MAX_DATE
+  const isValidMerchant = $transactionMerchant.val().trim().length > 0
+  if (!isValidAmount) {
+    $addTransactionErrMsg.html("Enter Valid Amount");
+    $addTransactionErrAlert.show();
+  } else if (!isValidDate) {
+    $addTransactionErrMsg.html("Enter Date from 1900-01-01 to 2999-12-31");
+    $addTransactionErrAlert.show();
+
+  } else if (!isValidMerchant) {
+    $addTransactionErrMsg.html("Enter Non-Empty Merchant Name");
+    $addTransactionErrAlert.show();
+  }
+  else {
     const authToken = Cookies.get(authTokenCookie);
     const amountValue = Math.round(parseFloat($transactionAmount.val()) * 100);
-    const amount = amountValue * (TRANSACTION_TYPE === "earned" ? -1 : 1); // Depending on "earned"/"paid" select amount sign
+
+    // Depending on "earned"/"paid" select amount sign
+    const amount = amountValue * (TRANSACTION_TYPE === TransactionType.Earned ? -1 : 1); 
     const created = $transactionCreated.val();
     const merchant = $transactionMerchant.val();
     createTransactionAJAX({ authToken, amount, created, merchant });
-  } else {
-    $addTransactionErrMsg.html("Enter Valid Amount");
-    $addTransactionErrAlert.show();
-    $transactionAmount.val("");
   }
 });
 
@@ -175,9 +187,11 @@ $("#search-table").keyup(() => {
   renderTable();
 });
 
-// Sort table based on selected column
+// Sort table based on selected column and bolden column
 $("thead tr th").click(e => {
-  const sortBy = $(e.target).attr("sort-by");
+  const sortBy = $(e.target)
+    .attr("sort-by")
+    .toLowerCase();
   const isToggleSort = sortBy === TABLE_SORT.sortBy;
   if (isToggleSort) {
     TABLE_SORT = { ...TABLE_SORT, ascending: !TABLE_SORT.ascending };
@@ -186,26 +200,27 @@ $("thead tr th").click(e => {
   }
   sortTable();
   renderTable();
+  $(`.${sortBy}-col`).css("font-weight", "bold");
 });
 
 // Jump table page on input
-$("#curr-page-input").change(() => {
-  let page = $("#curr-page-input").val();
+$paginationInput.change(() => {
+  let page = $paginationInput.val();
   const pageInstance = TransactionsInstance.getInstance();
   const numPages = Math.ceil(pageInstance.length / ROWS_PER_PAGE);
   if (page > numPages) {
-    $("#curr-page-input").val(numPages);
+    $paginationInput.val(numPages);
     page = numPages;
   } else if (page < 1) {
-    $("#curr-page-input").val(1);
+    $paginationInput.val(1);
     page = 1;
   }
   renderTable(page);
 });
 
-// Jump table page on input 
-$("#curr-page-input").keyup(() => {
-  let page = $("#curr-page-input").val();
+// Jump table page on input
+$paginationInput.keyup(() => {
+  let page = $paginationInput.val();
   const pageInstance = TransactionsInstance.getInstance();
   const numPages = Math.ceil(pageInstance.length / ROWS_PER_PAGE);
   if (page > 0 && page <= numPages) {
@@ -214,16 +229,16 @@ $("#curr-page-input").keyup(() => {
 });
 
 // Traverse pages via buttons to render associated page
-$("#page-buttons div").click(e => {
+$pageButtons.click(e => {
   const clickedPage = $(e.currentTarget).data("page");
   renderTable(parseInt(clickedPage));
 });
 
 // Update table filtering on filter option change
-$("select").change(() => {
+$searchFilters.change(() => {
   searchTable(); // We research with current global SEARCH_QUERY to get correct transaction instance
 
-  ROWS_PER_PAGE = parseInt($("#display-select option:selected").val()); // Update rows to display per page
+  ROWS_PER_PAGE = parseInt($filterDisplaySelect.children("option:selected").val()); // Update rows to display per page
 
   const instance = TransactionsInstance.getInstance();
 

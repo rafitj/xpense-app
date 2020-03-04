@@ -33,8 +33,8 @@ const createTransactionAJAX = async ({ authToken, amount, created, merchant }) =
         $addTransactionErrAlert.show();
       } else {
         $addTransactionErrAlert.hide();
-        const data = JSON.parse(jsonRes.msg);
-        const transaction = data.transactionList[0];
+        const jsonData = JSON.parse(jsonRes.msg);
+        const transaction = jsonData.transactionList[0];
         addTableRow(transaction, isRecentTransaction = true);
         $resetTransaction.click();
       }
@@ -49,7 +49,7 @@ const createTransactionAJAX = async ({ authToken, amount, created, merchant }) =
 
 /**
  * @description Creates a Transaction
- * Success: Set cookie to response auth token and toggle view to authenticated
+ * Success: Set session cookie to response auth token and toggle view to authenticated
  * Error: Show detailed error message and shake login card
  * Timeout: Ask user to check connection after 5 seconds
  * @param {email, password} loginCredentials
@@ -77,6 +77,8 @@ const loginUserAJAX = async ({ email, password }) =>
           $unauthenticatedContent.removeClass("shake-error");
         }, 500);
       } else {
+        const jsonData = JSON.parse(jsonRes.msg);
+        Cookies.set(authTokenCookie, jsonData.authToken)
         $loginErrAlert.hide();
         toggleUserView();
       }
@@ -117,8 +119,8 @@ const loadTransactionsAJAX = async authToken =>
         $loadTransactionErrMsg.html(`Failed To Load Transactions`);
         $loadTransactionErrAlert.show();
       } else {
-        const data = JSON.parse(jsonRes.msg);
-        TransactionsInstance.createOriginalInstance(data.transactionList);
+        const jsonData = JSON.parse(jsonRes.msg);
+        TransactionsInstance.createOriginalInstance(jsonData.transactionList);
         sortTable();
         renderTable();
         $authenticatedContent.show();

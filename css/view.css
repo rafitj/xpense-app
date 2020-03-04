@@ -1,3 +1,4 @@
+/* Main Authenticated View Content Styles */
 #viewContent {
   display: flex;
   flex-direction: row;
@@ -65,7 +66,7 @@
   margin: 0 0.5rem 1rem 0;
 }
 
-/* Error Alerts */
+/* Create Transaction Error Alerts */
 #add-transac-err-msg {
   display: inline-block;
 }
@@ -96,22 +97,6 @@
 
 #search-filters select:hover {
   cursor: pointer;
-}
-
-/* Table Extras */
-.new-row {
-  background-color: var(--orange);
-}
-
-#no-search-results {
-  background-color: var(--red);
-  color: var(--white);
-  padding: 2rem 0;
-  text-align: center;
-  margin: 0 auto;
-  font-weight: bold;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 /* Dynamic Scroll Table */
@@ -208,8 +193,7 @@ tbody tr td {
   word-break: break-all;
 }
 
-/* Table Buttons & Pages */
-
+/* Table Pagination & Buttons */
 #page-buttons {
   display: inline-block;
 }
@@ -262,6 +246,23 @@ tbody tr td {
   display: inline-block;
 }
 
+/* Table Extras */
+.new-row {
+  background-color: var(--orange);
+}
+
+#no-search-results {
+  background-color: var(--red);
+  color: var(--white);
+  padding: 2rem 0;
+  text-align: center;
+  margin: 0 auto;
+  font-weight: bold;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* Responsive Breakpoints */
 @media (max-width: 1024px) {
   #viewContent {
     flex-direction: column;
@@ -298,7 +299,7 @@ tbody tr td {
 }
 
 @media (max-width: 680px) {
-  #addForm {
+  #addTransactionForm form  {
     flex-direction: column;
   }
 }

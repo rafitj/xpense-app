@@ -10,8 +10,8 @@ const currentDate = new Date().toISOString().slice(0, 10);
 const $unauthenticatedContent = $("#loginView");
 const $authenticatedContent = $("#viewContent, #logout-button");
 const $loader = $("#loader");
-const $allErrAlerts = $(
-  "#add-transac-err-alert, #login-err-alert, #load-transac-err-alert"
+const $alerts = $(
+  "#add-transac-err-alert, #login-err-alert, #load-transac-err-alert, #password-caps"
 );
 
 // Create Transaction Constants
@@ -37,6 +37,10 @@ const $tbody = $("tbody");
 const $noTableResults = $("#no-search-results");
 const $filterAmountSelect = $("#amount-type-select");
 const $filterDateRangeSelect = $("#date-range-select");
+const $filterDisplaySelect = $("#display-select");
+const $searchFilters = $("#search-filters select");
+const $pageButtons = $("#page-buttons div");
+const $paginationInput = $("#curr-page-input");
 
 // Login Constants
 const $logoutButton = $("#logout-button");
@@ -67,9 +71,9 @@ const Commands = {
 };
 
 const Transaction = {
-  Amount: "Amount",
-  Date: "Date",
-  Merchant: "Merchant"
+  Amount: "amount",
+  Date: "date",
+  Merchant: "merchant"
 };
 
 const FilterDate = {
@@ -103,7 +107,7 @@ const TransactionType = {
  * instance, modify it or revert instance to original
  *
  */
-const TransactionInstance = (() => {
+const TransactionsInstance = (() => {
   var originalInstance; // Primary instance
   var instance; // Secondary instance filtered and periodically refreshed
 
@@ -149,3 +153,6 @@ let TABLE_SORT = {
 let SEARCH_QUERY = ""; // search query for table search
 
 let TRANSACTION_TYPE = TransactionType.Paid; // explicit transaction type, paid = negative or 0, earned = positive or 0
+
+const MIN_DATE = new Date("1900-01-01");
+const MAX_DATE = new Date("2999-12-31");

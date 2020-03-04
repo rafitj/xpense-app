@@ -54,7 +54,7 @@ body {
 .green:hover,
 .red:hover,
 .yellow:hover {
-  background-color: var(--white);
+  background-color: var(--pure-white);
   border: 1px solid transparent;
 }
 .blue:hover {
