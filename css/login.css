@@ -1,15 +1,21 @@
 /* Login Styles */
 
-#loginView {
-  width: 40rem;
+#login-view {
+  width: 90%;
+  max-width: 40rem;
+  background-image: url('../assets/images/expensify_card.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
 }
-#loginView form {
-  margin: 0 auto;
-  text-align: center;
+#login-view form {
+  margin: 0 2rem;
+  padding: 0 1rem;
 }
 #login-logo {
-  width: 15rem;
-  margin: 2rem 1rem 0.5rem 5rem;
+  width: 50%;
+  margin: 2rem 0 0;
 }
 #login-background {
   width: 40rem;
@@ -21,20 +27,29 @@
   margin: auto;
 }
 
+#login-button {
+  margin: 1rem auto 2rem;
+}
+
+#login-button:hover {
+  border-color: white;
+  color: white;
+  background-color: transparent;s
+}
+
 /* Form Style Overrides */
-#loginView form .form_input {
-  width: 75%;
+#login-form .form-input {
+  width: 100%;
   padding: 12px 20px;
   border: 3px solid transparent;
 }
 
-#loginView form .form_input:focus {
+#login-form .form-input:focus {
   border-color: var(--blue);
 }
 
-#loginView form .form_label {
+#login-form .form-label {
   color: var(--white);
-  margin-left: 5rem;
 }
 
 /* Login Shake Error */
@@ -74,7 +89,6 @@
   justify-content: space-between;
   font-size: var(--body);
   font-weight: bold;
-  padding: 0 5rem;
 }
 
 #password-caps {

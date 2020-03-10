@@ -1,3 +1,5 @@
+/* File contains root styles and common styles */
+
 /* Root variables for Brand Consistency */
 :root {
   --white: #f1f1f1;
@@ -6,7 +8,7 @@
   --yellow: #f7c644;
   --green: #64c679;
   --red: #e67871;
-  --orange: #f7c74480;
+  --orange: #ffebb3;
   --pure-white: white;
   --title: 20px;
   --header: 15px;
@@ -22,7 +24,7 @@
 /* Body Flex for Responsiveness */
 body {
   margin: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
@@ -86,6 +88,9 @@ body {
   color: var(--yellow);
 }
 
+.bold-text {
+  font-weight: bold;
+}
 /* Centering Positioning Classes */
 .center {
   margin: 0;
@@ -102,7 +107,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 4rem;
+  padding: 1rem 3.5rem;
 }
 
 #header img {
@@ -128,11 +133,16 @@ body {
 /* Spinner Animation */
 #loader {
   z-index: 999;
+  background: var(--white);
+  padding: 3rem 2rem 0;
+  border-radius: 5px;
+  border: 4px solid var(--grey);
+  box-shadow: 0 0 20px #00000018;
 }
 #loader p {
   margin-top: 2.4rem;
   color: var(--grey);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 #spinner {
   position: relative;

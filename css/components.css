@@ -1,5 +1,5 @@
 /* Inputs (text,password,email,date,number) */
-.form_input {
+.form-input {
   box-sizing: border-box;
   border-radius: 5px;
   opacity: 0.8;
@@ -9,7 +9,7 @@
   height: 2.5rem;
 }
 
-.form_input:focus {
+.form-input:focus {
   opacity: 0.9;
   outline: none;
   box-shadow: none;
@@ -23,6 +23,8 @@
   margin: 1rem auto;
   opacity: 0.8;
   font-size: var(--header);
+  border: 1px solid;
+  border-color: transparent;
 }
 
 .button:hover,
@@ -35,14 +37,14 @@
 .small-button {
   font-size: var(--body);
   display: inline-block;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem;
   border-radius: 5px;
   margin: 0;
   opacity: 1;
 }
 
 /* Form labels */
-.form_label {
+.form-label {
   text-align: left;
   padding: 0;
   margin: 0;

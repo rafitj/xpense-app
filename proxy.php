@@ -5,7 +5,7 @@ $partnerName = $_ENV['PARTNER_NAME'];
 $partnerPassword = $_ENV['PARTNER_PASSWORD'];
 
 // Constants
-$BASE_URL = 'https://api.expensify.com/?';
+$BASE_URL = 'https://api.expensify.com/';
 $AUTHENTICATE_REQUEST = "Authenticate";
 $GET_REQUEST = "Get";
 $CREATE_TRANSACTION_REQUEST = "CreateTransaction";
@@ -31,15 +31,23 @@ $postMerchant = $_POST["merchant"];
 $postAmount = $_POST["amount"];
 
 // Fetch file contents depending on built URL
-function getFileContents($paramaters){
-	$requestUrl = $GLOBALS['BASE_URL'] . http_build_query($paramaters);
-	return @file_get_contents($requestUrl);
+function getFileContents($paramaters)
+{
+	$requestUrl = $GLOBALS['BASE_URL'] . '?' . http_build_query($paramaters);
+	return file_get_contents($requestUrl);
 }
 
 // Helper function for forming JSON responses
-function formResponse($err, $msg, $status){
-	$response = array('error' => $err, 'msg' => $msg, 'status'=>$status); 
-	return json_encode($response);
+function jsonSuccess($data, $status)
+{
+	header('HTTP/1.1 ' . $status);
+	exit(json_encode($data));
+}
+
+function jsonError($msg, $status)
+{
+	header('HTTP/1.1 ' . $status);
+	exit(json_encode(array('msg' => $msg)));
 }
 
 /**
@@ -49,59 +57,50 @@ function formResponse($err, $msg, $status){
  *  - Avoid using API error messages (not user-friendly)
  */
 
-if($requestMade === false){
-	$jsonResponse = formResponse(true, 'No Command Issued', 000);
-	exit($jsonResponse);
+if ($requestMade === false) {
+	jsonError('No Command Issued', 500);
 }
 
 // Authenticate User
-if($POST_COMMAND===$AUTHENTICATE_REQUEST){
-	if(isset($partnerUserID) && isset($partnerUserSecret)){
-		
+if ($POST_COMMAND === $AUTHENTICATE_REQUEST) {
+	if (isset($partnerUserID) && isset($partnerUserSecret)) {
+
 		$reqParams = array(
 			"command" => $AUTHENTICATE_REQUEST,
 			"partnerName" => $partnerName,
 			"partnerPassword" => $partnerPassword,
 			"partnerUserID" => $partnerUserID,
-			"partnerUserSecret" => $partnerUserSecret);
+			"partnerUserSecret" => $partnerUserSecret
+		);
 
 		$content = getFileContents($reqParams);
-		
+
 		if ($content === FALSE) {
-			$jsonResponse = formResponse(true, 'Please Check Network Connection', 500);
-			exit($jsonResponse);
+			jsonError('Please Check Network Connection & Refresh', 500);
 		}
-		
+
 		$jsonData = json_decode($content);
 
 		switch ($jsonData->jsonCode) {
 			case 200:
-				$jsonResponse = formResponse(false, json_encode($jsonData), 200);
-				break;
+				jsonSuccess($jsonData, 200);
 			case 401:
-				$jsonResponse = formResponse(true, 'Incorrect Password', 401);
-				break;
+				jsonError('Incorrect Password', 401);
 			case 404:
-				$jsonResponse = formResponse(true, 'Incorrect Account and/or Password', 404);
-				break;
+				jsonError('Incorrect Email and/or Password', 404);
 			case 405:
-				$jsonResponse = formResponse(true, 'Incorrect Email', 405);
-				break;
+				jsonError('Incorrect Email', 405);
 			default:
-				$jsonResponse = formResponse(true, 'Authorization Unsuccessful', 400);
+				jsonError('Authorization Unsuccessful', 400);
 		}
-		exit($jsonResponse);
-
 	} else {
-		$jsonResponse = formResponse(true, 'Please Provide Credentials', 400);
-		exit($jsonResponse);
+		jsonError('Please Provide Credentials', 400);
 	}
-
 }
 
 // Get Transactions
-if($GET_COMMAND===$GET_REQUEST){
-	if( isset($getAuthToken)){
+if ($GET_COMMAND === $GET_REQUEST) {
+	if (isset($getAuthToken)) {
 
 		$reqParams = array(
 			"command" => $GET_REQUEST,
@@ -110,42 +109,36 @@ if($GET_COMMAND===$GET_REQUEST){
 		);
 
 		$content = getFileContents($reqParams);
-	
+
 		if ($content === FALSE) {
-			$jsonResponse = formResponse(true, 'Please Check Network Connection', 500);
-			exit($jsonResponse);
+			jsonError('Please Check Network Connection & Refresh', 500);
 		}
-		
+
 		$jsonData = json_decode($content);
-		
+
 		switch ($jsonData->jsonCode) {
 			case 200:
-				$jsonResponse = formResponse(false, json_encode($jsonData), 200);
-				break;
+				jsonSuccess($jsonData, 200);
 			case 404:
-				$jsonResponse = formResponse(true, 'Transactions Not Found', 404);
-				break;
+				jsonError('Transactions Not Found', 404);
 			case 408:
-				$jsonResponse = formResponse(true, 'Bad Auth Token', 408);
-				break;
+				jsonError('Bad Auth Token', 408);
 			default:
-				$jsonResponse = formResponse(true, 'Authorization Unsuccessful', 400);
+				jsonError('Authorization Unsuccessful', 400);
 		}
 		exit($jsonResponse);
-
 	} else {
-		$jsonResponse = formResponse(true, 'Bad Auth Token', 400);
+		jsonError('Bad Auth Token', 400);
 		exit($jsonResponse);
 	}
-
-} 
+}
 
 // Create Transaction
-if($POST_COMMAND===$CREATE_TRANSACTION_REQUEST){
+if ($POST_COMMAND === $CREATE_TRANSACTION_REQUEST) {
 
-	if(isset($postAuthToken)){
+	if (isset($postAuthToken)) {
 
-		if( isset($postMerchant) && isset($postAmount) && isset($postCreated) ){
+		if (isset($postMerchant) && isset($postAmount) && isset($postCreated)) {
 
 			$paramaters = array(
 				"command" => $CREATE_TRANSACTION_REQUEST,
@@ -156,32 +149,26 @@ if($POST_COMMAND===$CREATE_TRANSACTION_REQUEST){
 			);
 
 			$content = getFileContents($paramaters);
-	
+
 			if ($content === FALSE) {
-				$jsonResponse = formResponse(true, 'Please Check Network Connection', 500);
-				exit($jsonResponse);
+				jsonError('Please Check Network Connection & Refresh', 500);
 			}
-			
+
 			$jsonData = json_decode($content);
 
-			if($jsonData->jsonCode == 200){
-				$jsonResponse = formResponse(false, json_encode($jsonData), 200);
-				exit($jsonResponse);
+			if ($jsonData->jsonCode == 200) {
+				jsonSuccess($jsonData, 200);
 			} else {
-				$jsonResponse = formResponse(true, $jsonData->message, $jsonData->jsonCode);
-				exit($jsonResponse);
+				jsonError($jsonData->message, $jsonData->jsonCode);
 			}
+
 		} else {
-			$jsonResponse = formResponse(true, 'Please Include All Transaction Data', 400);
-			exit($jsonResponse);
+			jsonError('Please Include All Transaction Data', 400);
 		}
 	} else {
-		$jsonResponse = formResponse(true, 'Bad Token', 401);
-		exit($jsonResponse);
+		jsonError('Bad Token', 401);
 	}
-
 }
 
 // Invalid Command Default
-$jsonResponse = formResponse(true, 'Invalid Command Issued', 400);
-exit($jsonResponse);
+jsonError('Invalid Command Issued', 400);

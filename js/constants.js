@@ -7,8 +7,9 @@
 const currentDate = new Date().toISOString().slice(0, 10);
 
 // Main Views Constants
-const $unauthenticatedContent = $("#loginView");
-const $authenticatedContent = $("#viewContent, #logout-button");
+const $body = $("body");
+const $unauthenticatedContent = $("#login-view");
+const $authenticatedContent = $("#view-content, #logout-button");
 const $loader = $("#loader");
 const $alerts = $(
   "#add-transac-err-alert, #login-err-alert, #load-transac-err-alert, #password-caps"
@@ -23,7 +24,7 @@ const $resetTransaction = $("#reset-transaction");
 const $addTransactionErrAlert = $("#add-transac-err-alert");
 const $addTransactionDismissErr = $("#add-transac-dismiss-err");
 const $addTransactionErrMsg = $("#add-transac-err-msg");
-const $addTransactionForm = $("#addTransactionForm");
+const $addTransactionForm = $("#add-transaction-form");
 const $transactionAmountPaidBtn = $("#transaction-amount-paid");
 const $transactionAmountEarnedBtn = $("#transaction-amount-earned");
 
@@ -34,13 +35,23 @@ const $loadTransactionErrMsg = $("#load-transac-err-msg");
 // Table Constants
 const $table = $("table");
 const $tbody = $("tbody");
+const $tableSearchInput = $("#search-table");
 const $noTableResults = $("#no-search-results");
 const $filterAmountSelect = $("#amount-type-select");
 const $filterDateRangeSelect = $("#date-range-select");
 const $filterDisplaySelect = $("#display-select");
 const $searchFilters = $("#search-filters select");
-const $pageButtons = $("#page-buttons div");
 const $paginationInput = $("#curr-page-input");
+const $pageBtns = $("#page-buttons");
+const $currPageBtn = $("#curr-page");
+const $prevPrevPageBtn = $("#prev-prev-page");
+const $prevPageBtn = $("#prev-page");
+const $prevPageArrowBtn = $("#prev-button");
+const $nextNextPageBtn = $("#next-next-page");
+const $nextPageBtn = $("#next-page");
+const $nextPageArrowBtn = $("#next-button");
+const $totalPages = $("#total-pages");
+const $currPageInput = $("#curr-page-input");
 
 // Login Constants
 const $logoutButton = $("#logout-button");
@@ -51,14 +62,14 @@ const $showPasswordButton = $("#show-password");
 const $loginErrAlert = $("#login-err-alert");
 const $loginDismissErr = $("#login-dismiss-err");
 const $loginErrMsg = $("#login-err-msg");
-const $loginForm = $("#loginForm");
+const $loginForm = $("#login-form");
 const $passwordCapsWarning = $("#password-caps");
 
 // Server
 const authTokenCookie = "auth-token";
 const URL_PROXY = "proxy.php";
 
-// Methods and Commands
+// Methods and Commands and Filters Enums
 const Methods = {
   POST: "POST",
   GET: "GET"
@@ -112,32 +123,36 @@ const TransactionsInstance = (() => {
   var instance; // Secondary instance filtered and periodically refreshed
 
   // Creates instance on the heap
-  createInstance = data => {
-    const object = new Object(data);
+  createInstance = transactions => {
+    const object = new Object(transactions);
     return object;
   };
 
   return {
     // Fetches secondary instance object
-    getInstance: data => {
+    getInstance: transactions => {
       if (!instance) {
-        instance = createInstance(data);
+        instance = createInstance(transactions);
       }
       return instance;
     },
     // Creates original instance after loadTransactions
-    createOriginalInstance: data => {
-      originalInstance = createInstance(data);
-      instance = createInstance(data);
+    createOriginalInstance: transactions => {
+      originalInstance = createInstance(transactions);
+      instance = createInstance(transactions);
       return originalInstance;
     },
-    // Change secondary instance data
-    changeInstance: data => {
-      instance = createInstance(data);
+    // Change secondary instance transactions
+    changeInstance: transactions => {
+      instance = createInstance(transactions);
     },
     // Refreshes secondary instance to original primary instance
     refreshInstance: () => {
       instance = originalInstance;
+    },
+    // When adding new transaction we modify original instance
+    modifyOriginalInstance: transaction => {
+      originalInstance.push(transaction);
     }
   };
 })();

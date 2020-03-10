@@ -10,9 +10,14 @@
  * Success: Add transaction to top of table (regardless of filters/search) and reset form
  * Error: Show detailed error message
  * Timeout: Ask user to check connection after 5 seconds
- * @param {authToken, amount, created, merchant} transaction 
+ * @param {authToken, amount, created, merchant} transaction
  */
-const createTransactionAJAX = async ({ authToken, amount, created, merchant }) =>
+const createTransactionAJAX = async ({
+  authToken,
+  amount,
+  created,
+  merchant
+}) =>
   $.ajax({
     url: URL_PROXY,
     method: Methods.POST,
@@ -25,25 +30,10 @@ const createTransactionAJAX = async ({ authToken, amount, created, merchant }) =
     },
     timeout: 5000,
     success: res => {
-      const jsonRes = JSON.parse(res);
-      if (jsonRes.error) {
-        $addTransactionErrMsg.html(
-          `<i class="fas fa-exclamation-triangle"></i>  ${jsonRes.msg}`
-        );
-        $addTransactionErrAlert.show();
-      } else {
-        $addTransactionErrAlert.hide();
-        const jsonData = JSON.parse(jsonRes.msg);
-        const transaction = jsonData.transactionList[0];
-        addTableRow(transaction, isRecentTransaction = true);
-        $resetTransaction.click();
-      }
-    },
-    error: jqXHR => {
-      if (jqXHR.statusText === "timeout") {
-        $addTransactionErrMsg.html(`Please Check Network Connection`);
-        $addTransactionErrAlert.show();
-      }
+      const jsonData = JSON.parse(res);
+      const transaction = jsonData.transactionList[0];
+      TransactionsInstance.modifyOriginalInstance(transaction);
+      addTableRow(transaction, (isRecentTransaction = true));
     }
   });
 
@@ -66,32 +56,8 @@ const loginUserAJAX = async ({ email, password }) =>
     },
     timeout: 5000,
     success: res => {
-      const jsonRes = JSON.parse(res);
-      if (jsonRes.error) {
-        $loginErrMsg.html(
-          `<i class="fas fa-exclamation-triangle"></i> &nbsp; ${jsonRes.msg}`
-        );
-        $loginErrAlert.show();
-        $unauthenticatedContent.addClass("shake-error");
-        setTimeout(() => {
-          $unauthenticatedContent.removeClass("shake-error");
-        }, 500);
-      } else {
-        const jsonData = JSON.parse(jsonRes.msg);
-        Cookies.set(authTokenCookie, jsonData.authToken)
-        $loginErrAlert.hide();
-        toggleUserView();
-      }
-    },
-    error: jqXHR => {
-      if (jqXHR.statusText === "timeout") {
-        $unauthenticatedContent.addClass("shake-error");
-        setTimeout(() => {
-          $unauthenticatedContent.removeClass("shake-error");
-        }, 500);
-        $loginErrMsg.html(`Please Check Network Connection`);
-        $loginErrAlert.show();
-      }
+      const jsonData = JSON.parse(res);
+      Cookies.set(authTokenCookie, jsonData.authToken);
     }
   });
 
@@ -114,22 +80,7 @@ const loadTransactionsAJAX = async authToken =>
     },
     timeout: 12000,
     success: res => {
-      const jsonRes = JSON.parse(res);
-      if (jsonRes.error) {
-        $loadTransactionErrMsg.html(`Failed To Load Transactions`);
-        $loadTransactionErrAlert.show();
-      } else {
-        const jsonData = JSON.parse(jsonRes.msg);
-        TransactionsInstance.createOriginalInstance(jsonData.transactionList);
-        sortTable();
-        renderTable();
-        $authenticatedContent.show();
-      }
-    },
-    error: jqXHR => {
-      if (jqXHR.statusText === "timeout") {
-        $loadTransactionErrMsg.html(`Please Check Network Connection`);
-        $loadTransactionErrAlert.show();
-      }
+      const jsonData = JSON.parse(res);
+      TransactionsInstance.createOriginalInstance(jsonData.transactionList);
     }
   });

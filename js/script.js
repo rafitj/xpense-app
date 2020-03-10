@@ -10,6 +10,8 @@
  * - Always try and use const over let/var
  * - Keep $(document).ready() light
  * - Use arrow functions for performance/reduced clutter
+ * - Using ids are much faster in jQuery, provide context for classes if necessary
+ * - Do not mix css, use classes
  */
 
 // Loader shows and hides on every AJAX call
@@ -21,8 +23,23 @@ $(document)
     $loader.hide();
   });
 
+$('#tableview-holder').scrollTop( e =>
+  console.log(e)
+)
+$('#tableview').scrollTop( e =>
+  console.log(e)
+)
+$('thead').scrollTop( e =>
+  console.log(e)
+)
+$('table').scrollTop( e =>
+  console.log(e)
+)
+
+
 // Document on Ready
 $(document).ready(() => {
+  $body.css('display', 'flex')
   // Hide all content initially
   $loader.hide();
   $alerts.hide();
@@ -41,14 +58,27 @@ $(document).ready(() => {
  */
 
 // Login User Event
-$loginButton.click(() => {
+$loginButton.click(async () => {
   const email = $loginEmail.val();
   const password = $loginPassword.val();
-  loginUserAJAX({ email, password });
+  try {
+    await loginUserAJAX({ email, password });
+    $loginErrAlert.hide();
+    toggleUserView();
+  } catch (err) {
+    const errMsg = getErrMsg(err)
+    $loginErrMsg.find(".fa-exclamation-triangle").show();
+    $loginErrMsg.text(errMsg);
+    $loginErrAlert.show();
+    $unauthenticatedContent.addClass("shake-error");
+    setTimeout(() => {
+      $unauthenticatedContent.removeClass("shake-error");
+    }, 500);
+  }
 });
 
 // Allow submit on "Enter"
-$loginForm.children("input").keyup(event => {
+$loginForm.children(".form-input").keyup(event => {
   if (event.keyCode === 13) {
     event.preventDefault();
     $loginButton.click();
@@ -57,7 +87,7 @@ $loginForm.children("input").keyup(event => {
 
 // Indicate capslock when enteirng passowrd
 $loginPassword.keyup(e => {
-  if (e.originalEvent.getModifierState("CapsLock")) {
+  if (e.shiftKey || e.originalEvent.getModifierState("CapsLock")) {
     $passwordCapsWarning.show();
   } else {
     $passwordCapsWarning.hide();
@@ -86,31 +116,41 @@ $loginDismissErr.click(() => {
  */
 
 // Add Transaction
-$addTransactionButton.click(() => {
+$addTransactionButton.click(async () => {
   // Minimum input validation since API sends general response
-  const isValidAmount = $.isNumeric($transactionAmount.val()); 
-  const isValidDate = MIN_DATE <= Date.parse($transactionCreated.val()) && Date.parse($transactionCreated.val()) <= MAX_DATE
-  const isValidMerchant = $transactionMerchant.val().trim().length > 0
+  const isValidAmount = $.isNumeric($transactionAmount.val());
+  const isValidDate =
+    MIN_DATE <= Date.parse($transactionCreated.val()) &&
+    Date.parse($transactionCreated.val()) <= MAX_DATE;
+  const isValidMerchant = $transactionMerchant.val().trim().length > 0;
   if (!isValidAmount) {
     $addTransactionErrMsg.html("Enter Valid Amount");
     $addTransactionErrAlert.show();
   } else if (!isValidDate) {
     $addTransactionErrMsg.html("Enter Date from 1900-01-01 to 2999-12-31");
     $addTransactionErrAlert.show();
-
   } else if (!isValidMerchant) {
     $addTransactionErrMsg.html("Enter Non-Empty Merchant Name");
     $addTransactionErrAlert.show();
-  }
-  else {
+  } else {
     const authToken = Cookies.get(authTokenCookie);
     const amountValue = Math.round(parseFloat($transactionAmount.val()) * 100);
 
     // Depending on "earned"/"paid" select amount sign
-    const amount = amountValue * (TRANSACTION_TYPE === TransactionType.Earned ? -1 : 1); 
+    const amount =
+      amountValue * (TRANSACTION_TYPE === TransactionType.Earned ? -1 : 1);
     const created = $transactionCreated.val();
     const merchant = $transactionMerchant.val();
-    createTransactionAJAX({ authToken, amount, created, merchant });
+    try {
+      await createTransactionAJAX({ authToken, amount, created, merchant });
+      $addTransactionErrAlert.hide();
+      $resetTransaction.click();
+    } catch (err) {
+      const errMsg = getErrMsg(err)
+      $addTransactionErrMsg.find(".fa-exclamation-triangle").show();
+      $addTransactionErrMsg.text(errMsg);
+      $addTransactionErrAlert.show();
+    }
   }
 });
 
@@ -141,7 +181,7 @@ $transactionAmount.change(() => {
     const amount = parseFloat($transactionAmount.val());
     $addTransactionErrAlert.hide();
     if (amount < 0) {
-      $("#transaction-amount-paid").click();
+      transactionAmountPaidBtn.click();
     }
     $transactionAmount.val(Math.abs(amount).toFixed(2));
   } else {
@@ -152,7 +192,7 @@ $transactionAmount.change(() => {
 });
 
 // Allow submit on "Enter"
-$addTransactionForm.children("form input").keyup(event => {
+$addTransactionForm.children("form-input").keyup(event => {
   if (event.keyCode === 13) {
     event.preventDefault();
     $addTransactionButton.click();
@@ -171,6 +211,7 @@ $addTransactionDismissErr.click(() => {
 // Logout - remove cookie and refresh view
 $logoutButton.click(() => {
   Cookies.remove(authTokenCookie);
+  $alerts.hide();
   toggleUserView();
 });
 
@@ -179,11 +220,12 @@ $logoutButton.click(() => {
  */
 
 // Search table on search input keyup
-$("#search-table").keyup(() => {
-  SEARCH_QUERY = $("#search-table")
+$tableSearchInput.keyup(() => {
+  SEARCH_QUERY = $tableSearchInput
     .val()
     .toLowerCase();
   searchTable();
+  sortTable();
   renderTable();
 });
 
@@ -200,7 +242,7 @@ $("thead tr th").click(e => {
   }
   sortTable();
   renderTable();
-  $(`.${sortBy}-col`).css("font-weight", "bold");
+  $(`.${sortBy}-col`).addClass("bold-text");
 });
 
 // Jump table page on input
@@ -211,7 +253,7 @@ $paginationInput.change(() => {
   if (page > numPages) {
     $paginationInput.val(numPages);
     page = numPages;
-  } else if (page < 1) {
+  } else if (page < 1 || !$.isNumeric(page)) {
     $paginationInput.val(1);
     page = 1;
   }
@@ -229,7 +271,7 @@ $paginationInput.keyup(() => {
 });
 
 // Traverse pages via buttons to render associated page
-$pageButtons.click(e => {
+$pageBtns.find('.pg-btn').click(e => {
   const clickedPage = $(e.currentTarget).data("page");
   renderTable(parseInt(clickedPage));
 });
@@ -238,12 +280,15 @@ $pageButtons.click(e => {
 $searchFilters.change(() => {
   searchTable(); // We research with current global SEARCH_QUERY to get correct transaction instance
 
-  ROWS_PER_PAGE = parseInt($filterDisplaySelect.children("option:selected").val()); // Update rows to display per page
+  ROWS_PER_PAGE = parseInt(
+    $filterDisplaySelect.children("option:selected").val()
+  ); // Update rows to display per page
 
   const instance = TransactionsInstance.getInstance();
 
   // Filter table and rerender table
   const newInstance = filterTable(instance);
   TransactionsInstance.changeInstance(newInstance);
+  sortTable();
   renderTable();
 });

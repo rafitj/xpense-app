@@ -1,50 +1,50 @@
 /* Main Authenticated View Content Styles */
-#viewContent {
+#view-content {
   display: flex;
   flex-direction: row;
   align-items: stretch;
   justify-content: center;
-  padding: 0 1.5rem;
+  padding: 0 3rem;
 }
 
-#transactionTable,
-#addTransactionForm {
+#transaction-table,
+#add-transaction-form {
   padding: 0 1rem;
 }
 
-#viewContent .form_input {
+#view-content .form-input {
   padding: 0 20px;
   margin: 8px auto;
   border: 1.5px solid var(--grey);
   width: 100%;
 }
 
-#viewContent .form_label {
+#view-content .form-label {
   color: var(--grey);
 }
 
-#viewContent h2 {
+#view-content h2 {
   color: var(--grey);
   display: inline-block;
   margin: 0.5rem 0;
 }
 
 /* Add Transaction Form */
-#addTransactionForm {
+#add-transaction-form {
   flex-wrap: wrap;
 }
 
-#addTransactionForm form {
+#add-transaction-form form {
   padding: 1rem;
   background-color: white;
   border-radius: 5px;
-  margin: 1rem 0;
+  margin: 0 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
 
-#addTransactionForm .transactionElement {
+#add-transaction-form .transaction-element {
   flex-grow: 1;
   margin: 0 0.5rem;
 }
@@ -99,14 +99,18 @@
   cursor: pointer;
 }
 
+.filter-label {
+  margin-left: 0.25rem;
+}
+
 /* Dynamic Scroll Table */
-.tableview {
+#tableview {
   position: relative;
   padding-top: 3.4285714em;
   color: var(--grey);
   margin: 1rem 0;
 }
-.tableview:before {
+#tableview:before {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   content: "";
@@ -116,7 +120,7 @@
   right: 0;
   top: 0;
 }
-.tableview-holder {
+#tableview-holder {
   display: block;
   position: static;
   overflow-x: hidden;
@@ -132,6 +136,7 @@ table {
   border-collapse: collapse;
   background-color: white;
   margin-top: 0;
+  table-layout: fixed;
 }
 thead tr th,
 thead tr th:after {
@@ -154,7 +159,7 @@ thead tr th:before {
   margin-top: -3.4285714em;
 }
 
-.tableview:before {
+#tableview:before {
   height: 3.4285714em;
   background-color: var(--grey);
 }
@@ -165,7 +170,6 @@ thead tr th {
   text-align: center;
   color: var(--white);
   text-align: center;
-  padding: 0 4rem;
 }
 thead tr th:hover {
   cursor: pointer;
@@ -184,13 +188,13 @@ tbody tr {
   border-bottom: 1px solid var(--white);
 }
 tbody tr td {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
   text-align: center;
   max-width: 12rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-x: scroll;
   word-wrap: break-word;
   word-break: break-all;
+  white-space: nowrap;
 }
 
 /* Table Pagination & Buttons */
@@ -264,42 +268,52 @@ tbody tr td {
 
 /* Responsive Breakpoints */
 @media (max-width: 1024px) {
-  #viewContent {
+  #view-content {
     flex-direction: column;
     padding: 0 1.5rem;
   }
-  #viewContent h2 {
+  #view-content h2 {
     margin: 0.5rem 0;
   }
-  #transactionTable,
-  #addTransactionForm {
+  #transaction-table,
+  #add-transaction-form {
     padding: 0;
     width: 100%;
   }
-  #addTransactionForm {
+  #add-transaction-form {
     order: 0;
   }
-  #transactionTable {
+  #transaction-table {
     order: 1;
   }
-  #transactionTableBody {
+  #transaction-tableBody {
     height: 15rem;
     width: 100%;
   }
-  #addTransactionForm form {
+  #add-transaction-form form {
     flex-direction: row;
   }
   #add-transac-err-alert {
     display: inline-block;
     padding: 10px 20px;
   }
-  #addTransactionForm form {
+  #add-transaction-form form {
     padding: 0.5rem;
   }
 }
 
 @media (max-width: 680px) {
-  #addTransactionForm form  {
+  #add-transaction-form form  {
     flex-direction: column;
+  }
+  #table-pages {
+    flex-direction: column;
+    align-items: center;
+  }
+  #jump-pages-input {
+    margin-top: 1rem;
+  }
+  .filter-label {
+    display: none;
   }
 }

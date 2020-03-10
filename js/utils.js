@@ -5,17 +5,27 @@
  * - Consume DOM values, avoid DOM style manipulations
  */
 
-
 /**
  * @description Toggles view depending on user authentication status
  * - If there is an authToken cookie set, we hide unauthenticated view and loadTransactions
  * - If there is no authToken cookie we show unauthenticated view and hide authenticated view
  */
-const toggleUserView = () => {
+const toggleUserView = async () => {
   const authToken = Cookies.get(authTokenCookie);
   if (authToken) {
     $unauthenticatedContent.hide();
-    loadTransactionsAJAX(authToken); // authenticatedContent shown within AJAX call
+    try {
+      await loadTransactionsAJAX(authToken); // authenticatedContent shown within AJAX call
+      sortTable();
+      renderTable();
+      $authenticatedContent.show();
+    } catch (err) {
+      const errMsg = getErrMsg(err)
+      $loadTransactionErrMsg.find(".fa-exclamation-triangle").show();
+      $loadTransactionErrMsg.text(errMsg);
+      $loadTransactionErrAlert.show();
+      $logoutButton.show();
+    }
   } else {
     $unauthenticatedContent.show();
     $authenticatedContent.hide();
@@ -68,7 +78,6 @@ const sortTable = () => {
       transactionsInstance.sort((a, b) => b.amount - a.amount);
     }
   }
-
 };
 
 /**
@@ -106,14 +115,11 @@ const addTableRow = (transaction, isRecentTransaction = false) => {
     $tr = $tbody.find("tr:last");
   }
   // Append date, merchant and amount
-  $tr.append($("<td>").text(created.substr(0, 10)).addClass('date-col'));
-  $tr.append($("<td>").text(merchant).addClass('merchant-col'));
-  $tr.append(
-    $("<td>")
-      .text(amountText)
-      .addClass(amountClass)
-      .addClass('amount-col')
-  );
+  const columns = [];
+  columns[0] = `<td class='date-col'>${created.substr(0, 10)}</td>`
+  columns[1] = `<td class='merchant-col'>${merchant}</td>`
+  columns[2] = `<td class='${'amount-col ' + amountClass}'>${amountText}</td>`
+  $tr.append(columns.join("")); // .join() is more performant than .append()
 };
 
 /**
@@ -126,7 +132,6 @@ const addTableRow = (transaction, isRecentTransaction = false) => {
 const renderTable = (page = 1) => {
   const transactionsInstance = TransactionsInstance.getInstance();
   if (transactionsInstance.length === 0) {
-    console.log('hey')
     // Clear table and display error
     $tbody.empty();
     $noTableResults.show();
@@ -139,7 +144,7 @@ const renderTable = (page = 1) => {
     const startIndex = ROWS_PER_PAGE * (page - 1);
     const endIndex = Math.min(
       transactionsInstance.length,
-      (ROWS_PER_PAGE * (page - 1)) + ROWS_PER_PAGE
+      ROWS_PER_PAGE * (page - 1) + ROWS_PER_PAGE
     );
     for (var i = startIndex; i < endIndex; i++) {
       const transaction = transactionsInstance[i];
@@ -150,45 +155,46 @@ const renderTable = (page = 1) => {
     const numPages = Math.ceil(transactionsInstance.length / ROWS_PER_PAGE);
 
     // Pagination input UI
-    $("#total-pages").html(` of ${numPages}`);
-    $("#curr-page-input").val(page);
-
+    $totalPages.text(` of ${numPages}`);
+    $currPageInput.val(page);
 
     // Pagination buttons UI - conditionally rendered if in range
     const pageNum = parseInt(page);
-    $("#page-buttons div").hide(); // Initially hide all buttons
+    $pageBtns
+      .find(".pg-btn")
+      .hide(); // Initially hide all buttons
 
-    $("#curr-page")
-      .html(`${page}`)
+    $currPageBtn
+      .text(`${page}`)
       .data("page", pageNum)
       .show();
     if (pageNum + 1 <= numPages) {
-      $("#next-page")
-        .html(`${pageNum + 1}`)
+      $nextPageBtn
+        .text(`${pageNum + 1}`)
         .data("page", pageNum + 1)
         .show();
-      $("#next-button")
+      $nextPageArrowBtn
         .data("page", pageNum + 1)
         .show();
     }
     if (pageNum + 2 <= numPages) {
-      $("#next-next-page")
-        .html(`${pageNum + 2}`)
+      $nextNextPageBtn
+        .text(`${pageNum + 2}`)
         .data("page", pageNum + 2)
         .show();
     }
     if (pageNum - 1 >= 1) {
-      $("#prev-page")
-        .html(`${pageNum - 1}`)
+      $prevPageBtn
+        .text(`${pageNum - 1}`)
         .data("page", pageNum - 1)
         .show();
-      $("#prev-button")
+      $prevPageArrowBtn
         .data("page", pageNum - 1)
         .show();
     }
     if (pageNum - 2 >= 1) {
-      $("#prev-prev-page")
-        .html(`${pageNum - 2}`)
+      $prevPrevPageBtn
+        .text(`${pageNum - 2}`)
         .data("page", pageNum - 2)
         .show();
     }
@@ -197,11 +203,13 @@ const renderTable = (page = 1) => {
 
 /**
  * @description Filter a transactionInstance with the set table filters: amount_type and created_date
- * @param {*} instance 
+ * @param {*} instance
  */
 const filterTable = instance => {
   const filterDate = $filterDateRangeSelect.children("option:selected").val();
-  const filterAmountType = $filterAmountSelect.children("option:selected").val();
+  const filterAmountType = $filterAmountSelect
+    .children("option:selected")
+    .val();
 
   let newInstance = instance;
 
@@ -240,4 +248,15 @@ const filterTable = instance => {
   }
 
   return newInstance;
+};
+
+/**
+ * @description Helper method for getting abstracting error message parsing
+ * @param {err}
+ */
+
+const getErrMsg = err => {
+  return err.statusText === "timeout"
+    ? "Please Check Network Connection"
+    : JSON.parse(err.responseText).msg;
 };

@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Expensify Take-Home Challenge</title>
+    <!-- Allow Media Query for Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/view.css">
