@@ -261,4 +261,7 @@
   .filter-label {
     display: none;
   }
+  #search-filters i{
+    display: none;
+  }
 }
