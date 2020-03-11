@@ -102,7 +102,7 @@ if ($POST_COMMAND === $AUTHENTICATE_REQUEST) {
 			case 405:
 				jsonError('Incorrect Email', 405);
 			default:
-				jsonError('Authorization Unsuccessful', 400);
+				jsonError('Please Provide Registered Credentials', 400);
 		}
 	} else {
 		// Incomplete form
