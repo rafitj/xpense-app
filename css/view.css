@@ -1,56 +1,38 @@
 /* Main Authenticated View Content Styles */
 #view-content {
-  display: flex;
-  flex-direction: row;
   align-items: stretch;
   justify-content: center;
   padding: 0 3rem;
 }
 
-#transaction-table,
-#add-transaction-form {
+#transaction-table-container {
   padding: 0 1rem;
 }
 
 #view-content .form-input {
-  padding: 0 20px;
   margin: 8px auto;
-  border: 1.5px solid var(--grey);
-  width: 100%;
+  padding: 0 20px;
 }
 
-#view-content .form-label {
-  color: var(--grey);
-}
-
-#view-content h2 {
-  color: var(--grey);
-  display: inline-block;
-  margin: 0.5rem 0;
-}
-
-/* Add Transaction Form */
-#add-transaction-form {
+/* Create Transaction Form */
+#create-transaction-container {
   flex-wrap: wrap;
 }
 
-#add-transaction-form form {
-  padding: 1rem;
-  background-color: white;
-  border-radius: 5px;
-  margin: 0 0 1rem;
-  display: flex;
-  flex-direction: column;
+#create-transaction-form {
+  background-color: var(--pure-white);
   justify-content: space-evenly;
+  margin: 0 0 1rem;
+  padding: 1rem;
 }
 
-#add-transaction-form .transaction-element {
+#create-transaction-form .transaction-element {
   flex-grow: 1;
   margin: 0 0.5rem;
 }
 
 #amount-label {
-  display: inline-block !important;
+  display: inline-block;
 }
 
 #transaction-amount-paid {
@@ -58,11 +40,11 @@
 }
 
 .disabled-amount {
-  opacity: 0.4 !important;
+  opacity: 0.4;
 }
 
-#add-transaction,
-#reset-transaction {
+#add-transaction-btn,
+#reset-transaction-btn {
   margin: 0 0.5rem 1rem 0;
 }
 
@@ -72,24 +54,21 @@
 }
 #add-transac-err-alert {
   width: auto;
+  margin: 0 0 1rem 0;
 }
 
 /* Table Search & Filtering */
 #search-table {
-  width: 100%;
   margin: 0 !important;
 }
 
 #search-filters {
-  color: var(--grey);
   font-size: var(--body);
   margin-top: 0.4rem;
 }
 
 #search-filters select {
   background-color: var(--pure-white);
-  border: 1.5px solid var(--grey);
-  color: var(--grey);
   -webkit-appearance: none;
   padding: 0.5rem 1rem;
   margin: 0.5rem 1rem 0 0.3rem;
@@ -106,13 +85,11 @@
 /* Dynamic Scroll Table */
 #tableview {
   position: relative;
-  padding-top: 3.4285714em;
-  color: var(--grey);
+  padding-top: 3.5em;
   margin: 1rem 0;
 }
 #tableview:before {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-radius: 5px 5px 0 0;
   content: "";
   position: absolute;
   display: block;
@@ -126,128 +103,100 @@
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 20rem;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-radius: 0 0 5px 5px;
 }
-table {
-  width: 100%;
-  position: static;
+#transaction-table {
+  background-color: var(--pure-white);
   border-spacing: 0;
   border-collapse: collapse;
-  background-color: white;
   margin-top: 0;
-  table-layout: fixed;
-}
-thead tr th,
-thead tr th:after {
-  white-space: nowrap;
   position: static;
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* The following allows for a sticky thead */
+#transaction-table thead tr th,
+#transaction-table thead tr th:after {
   height: 0;
   line-height: 0;
   padding-top: 0;
   padding-bottom: 0;
+  position: static;
+  white-space: nowrap;
 }
-thead tr th:after {
-  content: attr(sort-by);
+#transaction-table thead tr th:after {
   color: transparent;
+  content: attr(sort-by);
   display: inline-block;
 }
-thead tr th:before {
+#transaction-table thead tr th:before {
   content: attr(sort-by);
+  line-height: 3.5em;
+  margin-top: -3.5em;
   position: absolute;
-  line-height: 3.4285714em;
-  margin-top: -3.4285714em;
 }
-
 #tableview:before {
-  height: 3.4285714em;
   background-color: var(--grey);
+  height: 3.5em;
 }
 
-thead tr th {
+/* Hover styles for table rows */
+#transaction-table thead tr th {
+  color: var(--white);
   cursor: pointer;
   font-weight: bold;
   text-align: center;
-  color: var(--white);
-  text-align: center;
 }
-thead tr th:hover {
+#transaction-table thead tr th:hover {
   cursor: pointer;
   opacity: 0.7;
 }
-tbody:hover tr td {
-  opacity: 0.4;
+#transaction-table tbody:hover tr td {
   background-color: var(--white);
+  opacity: 0.4;
 }
-tbody:hover tr:hover td {
-  opacity: 1;
-  cursor: pointer;
+#transaction-table tbody:hover tr:hover td {
   background-color: white;
+  cursor: pointer;
+  opacity: 1;
 }
-tbody tr {
+
+#transaction-table tbody tr {
   border-bottom: 1px solid var(--white);
 }
-tbody tr td {
+#transaction-table tbody tr td {
+  max-width: 12rem;
   padding: 0.5rem 0;
   text-align: center;
-  max-width: 12rem;
   overflow-x: scroll;
+  white-space: nowrap;
   word-wrap: break-word;
   word-break: break-all;
-  white-space: nowrap;
 }
 
 /* Table Pagination & Buttons */
+#table-pages {
+  justify-content: space-between;
+}
 #page-buttons {
   display: inline-block;
 }
-#page-buttons div {
-  width: 2rem;
+.pg-btn {
   padding: 0.5rem 0;
-  background-color: var(--pure-white);
-  color: var(--blue);
-  border-radius: 5px;
-  display: inline-block;
   text-align: center;
-  border: 1px solid var(--blue);
+  width: 1.5rem;
 }
-
-#page-buttons div:hover {
-  background-color: var(--grey);
-  color: var(--white);
-  cursor: pointer;
-}
-
-#curr-page {
-  background-color: var(--blue) !important;
-  color: var(--white) !important;
-}
-
-#table-pages {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-#curr-page-input {
-  font-size: var(--header);
-  width: 3rem;
-  padding: 0.2rem 0;
-  border: 1px solid var(--blue);
-  color: var(--grey);
-  margin: 0;
-  text-align: center;
-  border-radius: 5px;
-}
-
-#total-pages {
-  display: inline-block;
-  margin: 0;
-}
-
 #jump-pages-input {
-  color: var(--grey);
   display: inline-block;
+}
+#curr-page-input {
+  border: 1px solid var(--blue);
+  font-size: var(--header);
+  margin: 0;
+  padding: 0.2rem 0;
+  text-align: center;
+  width: 3rem;
 }
 
 /* Table Extras */
@@ -256,14 +205,10 @@ tbody tr td {
 }
 
 #no-search-results {
-  background-color: var(--red);
-  color: var(--white);
-  padding: 2rem 0;
+  border-radius: 0 0 5px 5px;
+  margin: 0;
   text-align: center;
-  margin: 0 auto;
-  font-weight: bold;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  width: 100%;
 }
 
 /* Responsive Breakpoints */
@@ -275,40 +220,40 @@ tbody tr td {
   #view-content h2 {
     margin: 0.5rem 0;
   }
-  #transaction-table,
-  #add-transaction-form {
+  #transaction-table-container,
+  #create-transaction {
     padding: 0;
     width: 100%;
   }
-  #add-transaction-form {
+  #create-transaction-container {
     order: 0;
   }
-  #transaction-table {
+  #transaction-table-container {
     order: 1;
   }
-  #transaction-tableBody {
+  #transaction-table-body {
     height: 15rem;
     width: 100%;
   }
-  #add-transaction-form form {
+  #create-transaction-form {
     flex-direction: row;
   }
   #add-transac-err-alert {
     display: inline-block;
     padding: 10px 20px;
   }
-  #add-transaction-form form {
+  #create-transaction-form {
     padding: 0.5rem;
   }
 }
 
 @media (max-width: 680px) {
-  #add-transaction-form form  {
+  #create-transaction-form {
     flex-direction: column;
   }
   #table-pages {
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
   }
   #jump-pages-input {
     margin-top: 1rem;

@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Expensify Take-Home Challenge</title>
+    <title>Rafit's Expensify Challenge</title>
     <!-- Allow Media Query for Mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="css/components.css">
     <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/view.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/components.css">
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">

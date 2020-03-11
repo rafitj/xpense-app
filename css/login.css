@@ -1,55 +1,43 @@
 /* Login Styles */
-
-#login-view {
+#login-view-container {
   width: 90%;
   max-width: 40rem;
-  background-image: url('../assets/images/expensify_card.svg');
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+}
+
+#login-view {
+  background-image: url("../assets/images/expensify_card.svg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border-radius: 5px;
+  border-radius: 15px;
 }
+
 #login-view form {
   margin: 0 2rem;
   padding: 0 1rem;
 }
 #login-logo {
-  width: 50%;
   margin: 2rem 0 0;
-}
-#login-background {
-  width: 40rem;
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
+  width: 45%;
 }
 
-#login-button {
-  margin: 1rem auto 2rem;
-}
-
-#login-button:hover {
-  border-color: white;
-  color: white;
-  background-color: transparent;s
-}
-
-/* Form Style Overrides */
+/* Login Form Styles and Overrides */
 #login-form .form-input {
-  width: 100%;
   padding: 12px 20px;
-  border: 3px solid transparent;
 }
-
 #login-form .form-input:focus {
   border-color: var(--blue);
 }
-
-#login-form .form-label {
-  color: var(--white);
+#login-button {
+  margin: 1rem auto 2rem;
+}
+#login-button:hover {
+  background-color: transparent;
+  border-color: var(--pure-white);
+  color: var(--pure-white);
 }
 
 /* Login Shake Error */
@@ -59,55 +47,53 @@
 
 @keyframes shake {
   0% {
-    transform: translate(-51%, -51%) rotate(0deg);
+    transform: translate(5px, -5px) rotate(0deg);
   }
   20% {
-    transform: translate(-53%, -50%) rotate(1deg);
+    transform: translate(-3px, 5px) rotate(1deg);
   }
   40% {
-    transform: translate(-49%, -51%) rotate(1deg);
+    transform: translate(2px, -2px) rotate(1deg);
   }
   60% {
-    transform: translate(-53%, -49%) rotate(0deg);
+    transform: translate(3px, 2px) rotate(0deg);
   }
   80% {
-    transform: translate(-51%, -51%) rotate(1deg);
+    transform: translate(4px, -4px) rotate(1deg);
   }
   100% {
-    transform: translate(-49%, -52%) rotate(-1deg);
+    transform: translate(-5px, 5px) rotate(-1deg);
   }
-}
-
-/* Login Error Alert */
-#login-err-alert {
-  transform: translate(-50%, 15rem);
 }
 
 /* Login Password Utilities */
 #login-password-utils {
-  display: flex;
-  justify-content: space-between;
   font-size: var(--body);
-  font-weight: bold;
+  justify-content: space-between;
 }
 
 #password-caps {
   background-color: var(--grey);
-  color: var(--white);
-  text-align: right;
-  padding: 0.25rem 0.3rem;
   border-radius: 5px;
+  padding: 0.2rem;
+  text-align: right;
 }
 
 #show-password {
-  opacity: 0.7;
-  color: var(--white);
-  width: 5rem;
+  padding: 0.2rem;
   text-align: left;
-  padding: 0.25rem 0.3rem;
+  width: 5rem;
 }
 
 #show-password:hover {
   cursor: pointer;
-  opacity: 1;
+}
+
+@media (max-width: 540px) {
+  #login-logo {
+    width: 80%;
+  }
+  #login-view {
+    border-radius: 5px;
+  }
 }

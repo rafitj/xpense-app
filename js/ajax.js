@@ -1,16 +1,13 @@
 /**
  * @file Performs all 3 AJAX calls made to the proxy and associated error handling
- *  - We return the AJAX call itself so we can perform .then() if needed
- *  - The proxy can't throw an error instead the response is given an error key that we validate in success
- *  - The AJAX error is strictly to check for timeouts to prevent hanging if connection lost during call
  */
 
 /**
  * @description Creates a Transaction
- * Success: Add transaction to top of table (regardless of filters/search) and reset form
- * Error: Show detailed error message
+ * Success: Add transaction to top of table (regardless of filters/search) and modify Transaction Instance
  * Timeout: Ask user to check connection after 5 seconds
  * @param {authToken, amount, created, merchant} transaction
+ * @async
  */
 const createTransactionAJAX = async ({
   authToken,
@@ -39,8 +36,7 @@ const createTransactionAJAX = async ({
 
 /**
  * @description Creates a Transaction
- * Success: Set session cookie to response auth token and toggle view to authenticated
- * Error: Show detailed error message and shake login card
+ * Success: Set session cookie to response auth token
  * Timeout: Ask user to check connection after 5 seconds
  * @param {email, password} loginCredentials
  * @async
@@ -57,14 +53,13 @@ const loginUserAJAX = async ({ email, password }) =>
     timeout: 5000,
     success: res => {
       const jsonData = JSON.parse(res);
-      Cookies.set(authTokenCookie, jsonData.authToken);
+      Cookies.set(AUTH_TOKEN_COOKIE, jsonData.authToken);
     }
   });
 
 /**
  * @description Load All Transactions
- * Success: Create a Transactions Singleton, render transactions table, sort transaction table and show authenticated view
- * Error: Show detailed error message and prevent showing authenticated view
+ * Success: Create a Transactions Singleton (original)
  * Timeout: Ask user to check connection and prevent showing authenticated view after 12 seconds
  * @param {authToken}
  * @async

@@ -1,26 +1,24 @@
 /**
  * @file Contains mostly atomic (isolated) utility functions called in AJAX functions and event handler functions
- * - Avoid interdependencies between functions
- * - Prevent excessive modularizaiton
- * - Consume DOM values, avoid DOM style manipulations
  */
 
 /**
  * @description Toggles view depending on user authentication status
  * - If there is an authToken cookie set, we hide unauthenticated view and loadTransactions
  * - If there is no authToken cookie we show unauthenticated view and hide authenticated view
+ * @async
  */
 const toggleUserView = async () => {
-  const authToken = Cookies.get(authTokenCookie);
+  const authToken = Cookies.get(AUTH_TOKEN_COOKIE);
   if (authToken) {
     $unauthenticatedContent.hide();
     try {
-      await loadTransactionsAJAX(authToken); // authenticatedContent shown within AJAX call
+      await loadTransactionsAJAX(authToken);
       sortTable();
       renderTable();
       $authenticatedContent.show();
     } catch (err) {
-      const errMsg = getErrMsg(err)
+      const errMsg = getErrMsg(err);
       $loadTransactionErrMsg.find(".fa-exclamation-triangle").show();
       $loadTransactionErrMsg.text(errMsg);
       $loadTransactionErrAlert.show();
@@ -107,18 +105,18 @@ const addTableRow = (transaction, isRecentTransaction = false) => {
   }
   // Highlight recent transaction
   if (isRecentTransaction) {
-    $("<tr>").prependTo($tbody);
-    $tr = $tbody.find("tr:first");
+    $("<tr>").prependTo($transactionTableBody);
+    $tr = $transactionTableBody.find("tr:first");
     $tr.addClass("new-row");
   } else {
-    $("<tr>").appendTo($tbody);
-    $tr = $tbody.find("tr:last");
+    $("<tr>").appendTo($transactionTableBody);
+    $tr = $transactionTableBody.find("tr:last");
   }
   // Append date, merchant and amount
   const columns = [];
-  columns[0] = `<td class='date-col'>${created.substr(0, 10)}</td>`
-  columns[1] = `<td class='merchant-col'>${merchant}</td>`
-  columns[2] = `<td class='${'amount-col ' + amountClass}'>${amountText}</td>`
+  columns[0] = `<td class='date-col'>${created.substr(0, 10)}</td>`;
+  columns[1] = `<td class='merchant-col'>${merchant}</td>`;
+  columns[2] = `<td class='${"amount-col " + amountClass}'>${amountText}</td>`;
   $tr.append(columns.join("")); // .join() is more performant than .append()
 };
 
@@ -133,12 +131,12 @@ const renderTable = (page = 1) => {
   const transactionsInstance = TransactionsInstance.getInstance();
   if (transactionsInstance.length === 0) {
     // Clear table and display error
-    $tbody.empty();
+    $transactionTableBody.empty();
     $noTableResults.show();
   } else {
     // Remove error and clear table
     $noTableResults.hide();
-    $tbody.empty();
+    $transactionTableBody.empty();
 
     // Populate table from page to table end or
     const startIndex = ROWS_PER_PAGE * (page - 1);
@@ -160,9 +158,7 @@ const renderTable = (page = 1) => {
 
     // Pagination buttons UI - conditionally rendered if in range
     const pageNum = parseInt(page);
-    $pageBtns
-      .find(".pg-btn")
-      .hide(); // Initially hide all buttons
+    $pageBtns.find(".pg-btn").hide(); // Initially hide all buttons
 
     $currPageBtn
       .text(`${page}`)
@@ -173,9 +169,7 @@ const renderTable = (page = 1) => {
         .text(`${pageNum + 1}`)
         .data("page", pageNum + 1)
         .show();
-      $nextPageArrowBtn
-        .data("page", pageNum + 1)
-        .show();
+      $nextPageArrowBtn.data("page", pageNum + 1).show();
     }
     if (pageNum + 2 <= numPages) {
       $nextNextPageBtn
@@ -188,9 +182,7 @@ const renderTable = (page = 1) => {
         .text(`${pageNum - 1}`)
         .data("page", pageNum - 1)
         .show();
-      $prevPageArrowBtn
-        .data("page", pageNum - 1)
-        .show();
+      $prevPageArrowBtn.data("page", pageNum - 1).show();
     }
     if (pageNum - 2 >= 1) {
       $prevPrevPageBtn
@@ -251,12 +243,10 @@ const filterTable = instance => {
 };
 
 /**
- * @description Helper method for getting abstracting error message parsing
+ * @description Helper method for returning error message depending on statusText
  * @param {err}
  */
-
-const getErrMsg = err => {
-  return err.statusText === "timeout"
-    ? "Please Check Network Connection"
+const getErrMsg = err =>
+  err.statusText === "timeout"
+    ? "Please Check Network Connection & Refresh"
     : JSON.parse(err.responseText).msg;
-};

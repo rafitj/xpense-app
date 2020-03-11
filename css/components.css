@@ -7,6 +7,7 @@
   font-size: var(--header);
   margin: 8px auto;
   height: 2.5rem;
+  width: 100%;
 }
 
 .form-input:focus {
@@ -57,7 +58,7 @@
 
 /* Error Alert */
 .alert {
-  width: 38rem;
+  width: 80%;
   background-color: var(--red);
   color: var(--white);
   font-weight: bold;
@@ -67,6 +68,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin: 1rem auto;
 }
 
 .dismiss-err {

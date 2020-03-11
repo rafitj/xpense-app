@@ -1,6 +1,6 @@
 /**
  * @file Contains all constant values, initial values and basic structures
- * - The use of constants avoids mispellings and reduces code errors.=
+ * - The use of constants avoids mispellings, reduces code errors and saves reference to jQuery elements
  */
 
 // Current Date: Used as default add transaction date and filters
@@ -19,8 +19,8 @@ const $alerts = $(
 const $transactionAmount = $("#transaction-amount");
 const $transactionCreated = $("#transaction-created");
 const $transactionMerchant = $("#transaction-merchant");
-const $addTransactionButton = $("#add-transaction");
-const $resetTransaction = $("#reset-transaction");
+const $addTransactionButton = $("#add-transaction-btn");
+const $resetTransaction = $("#reset-transaction-btn");
 const $addTransactionErrAlert = $("#add-transac-err-alert");
 const $addTransactionDismissErr = $("#add-transac-dismiss-err");
 const $addTransactionErrMsg = $("#add-transac-err-msg");
@@ -33,8 +33,8 @@ const $loadTransactionErrAlert = $("#load-transac-err-alert");
 const $loadTransactionErrMsg = $("#load-transac-err-msg");
 
 // Table Constants
-const $table = $("table");
-const $tbody = $("tbody");
+const $transactionTable = $("#transaction-table");
+const $transactionTableBody = $("#transaction-table").find('tbody');
 const $tableSearchInput = $("#search-table");
 const $noTableResults = $("#no-search-results");
 const $filterAmountSelect = $("#amount-type-select");
@@ -66,7 +66,7 @@ const $loginForm = $("#login-form");
 const $passwordCapsWarning = $("#password-caps");
 
 // Server
-const authTokenCookie = "auth-token";
+const AUTH_TOKEN_COOKIE = "auth-token";
 const URL_PROXY = "proxy.php";
 
 // Methods and Commands and Filters Enums
@@ -124,8 +124,10 @@ const TransactionsInstance = (() => {
 
   // Creates instance on the heap
   createInstance = transactions => {
-    const object = new Object(transactions);
-    return object;
+    if (transactions) {
+      return new Object(transactions);
+    }
+    return []
   };
 
   return {
@@ -169,5 +171,6 @@ let SEARCH_QUERY = ""; // search query for table search
 
 let TRANSACTION_TYPE = TransactionType.Paid; // explicit transaction type, paid = negative or 0, earned = positive or 0
 
+// API max and min transaction dates
 const MIN_DATE = new Date("1900-01-01");
 const MAX_DATE = new Date("2999-12-31");
