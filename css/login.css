@@ -1,99 +1,110 @@
 /* Login Styles */
+
 #login-view-container {
-  width: 90%;
-  max-width: 40rem;
-  justify-content: center;
-  align-content: center;
-  margin: 0 auto;
+    width: 90%;
+    max-width: 40rem;
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto;
 }
 
 #login-view {
-  background-image: url("../assets/images/expensify_card.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  border-radius: 15px;
+    background-image: url("../assets/images/card.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
 }
 
 #login-view form {
-  margin: 0 2rem;
-  padding: 0 1rem;
+    margin: 0 2rem;
+    padding: 0 1rem;
 }
+
 #login-logo {
-  margin: 2rem 0 0;
-  width: 45%;
+    margin: 2rem 0 0;
+    width: 45%;
 }
+
 
 /* Login Form Styles and Overrides */
+
 #login-form .form-input {
-  padding: 12px 20px;
-}
-#login-form .form-input:focus {
-  border-color: var(--blue);
-}
-#login-button {
-  margin: 1rem auto 2rem;
-}
-#login-button:hover {
-  background-color: transparent;
-  border-color: var(--pure-white);
-  color: var(--pure-white);
+    padding: 12px 20px;
 }
 
+#login-form .form-input:focus {
+    border-color: var(--blue);
+}
+
+#login-button {
+    margin: 1rem auto 2rem;
+}
+
+#login-button:hover {
+    background-color: transparent;
+    border-color: var(--pure-white);
+    color: var(--pure-white);
+}
+
+
 /* Login Shake Error */
+
 .shake-error {
-  animation: shake 0.25s;
+    animation: shake 0.25s;
 }
 
 @keyframes shake {
-  0% {
-    transform: translate(5px, -5px) rotate(0deg);
-  }
-  20% {
-    transform: translate(-3px, 5px) rotate(1deg);
-  }
-  40% {
-    transform: translate(2px, -2px) rotate(1deg);
-  }
-  60% {
-    transform: translate(3px, 2px) rotate(0deg);
-  }
-  80% {
-    transform: translate(4px, -4px) rotate(1deg);
-  }
-  100% {
-    transform: translate(-5px, 5px) rotate(-1deg);
-  }
+    0% {
+        transform: translate(5px, -5px) rotate(0deg);
+    }
+    20% {
+        transform: translate(-3px, 5px) rotate(1deg);
+    }
+    40% {
+        transform: translate(2px, -2px) rotate(1deg);
+    }
+    60% {
+        transform: translate(3px, 2px) rotate(0deg);
+    }
+    80% {
+        transform: translate(4px, -4px) rotate(1deg);
+    }
+    100% {
+        transform: translate(-5px, 5px) rotate(-1deg);
+    }
 }
 
+
 /* Login Password Utilities */
+
 #login-password-utils {
-  font-size: var(--body);
-  justify-content: space-between;
+    font-size: var(--body);
+    justify-content: space-between;
 }
 
 #password-caps {
-  background-color: var(--grey);
-  border-radius: 5px;
-  padding: 0.2rem;
-  text-align: right;
+    background-color: var(--grey);
+    border-radius: 5px;
+    padding: 0.2rem;
+    text-align: right;
 }
 
 #show-password {
-  padding: 0.2rem;
-  text-align: left;
-  width: 5rem;
+    padding: 0.2rem;
+    text-align: left;
+    width: 5rem;
 }
 
 #show-password:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 @media (max-width: 540px) {
-  #login-logo {
-    width: 80%;
-  }
-  #login-view {
-    border-radius: 5px;
-  }
+    #login-logo {
+        width: 80%;
+    }
+    #login-view {
+        border-radius: 5px;
+    }
 }

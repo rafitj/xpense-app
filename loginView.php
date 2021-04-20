@@ -7,7 +7,7 @@
         <!-- Form Contents -->
         <form method="POST" id="login-form">
 
-            <img id="login-logo" src="assets/images/expensify_logo_main.svg" alt="expensify-logo-long" />
+            <img id="login-logo" src="assets/images/logo_main.svg" alt="logo-long" />
 
             <label class="white-text form-label" for="login-email">Email</label>
             <input class="grey form-input" id="login-email" type="text"></input>

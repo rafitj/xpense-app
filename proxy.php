@@ -1,6 +1,6 @@
 <?php
 
-/** This file acts as a proxy for the Expensify API */
+/** This file acts as a proxy for the API */
 
 /**
  * Global Constants
@@ -11,7 +11,7 @@ $PARTNER_NAME = $_ENV['PARTNER_NAME'];
 $PARTNER_PASSWORD = $_ENV['PARTNER_PASSWORD'];
 
 // URL & Requests
-$BASE_URL = 'https://api.expensify.com/';
+$BASE_URL = 'https://api.com/';
 $AUTHENTICATE_REQUEST = "Authenticate";
 $GET_REQUEST = "Get";
 $CREATE_TRANSACTION_REQUEST = "CreateTransaction";

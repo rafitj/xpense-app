@@ -40,7 +40,7 @@
     <!-- Header -->
     <div>
         <div id="header">
-            <img src="assets/images/expensify_logo_small.svg" alt="headerlogo" />
+            <img src="assets/images/logo_small.svg" alt="headerlogo" />
             <input class="blue button" type=button id="logout-button" value="Logout" />
         </div>
         <div class="header-border border"></div>
