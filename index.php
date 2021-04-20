@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Rafit's Expensify Challenge</title>
+    <title>Xpense App</title>
     <!-- Allow Media Query for Mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Stylesheets -->
